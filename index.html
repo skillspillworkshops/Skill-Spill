@@ -1,0 +1,2110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>Skill Spill</title>
+    <meta
+      name="description"
+      content="Skill Spill: artist-led craft and making workshops at partner venues. Register for a workshop, propose one, or host one."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Pixelify+Sans:wght@500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+    />
+    <style>
+      /* Layout concept: a quiet early-web index page. Ink on paper, one green thread, a pixel wordmark as the single loud moment. */
+      :root {
+        --paper: #f6f6f2;
+        --paper-2: #ecece6;
+        --ink: #121310;
+        --muted: #686a62;
+        --rule: #c9cac2;
+        --accent: #16794a;
+        --accent-ink: #ffffff;
+        --warn: #a3361f;
+        --font-mark: "Pixelify Sans", "Courier New", monospace;
+        --font-body:
+          "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --font-mono:
+          "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+        --s-mono: 0.8125rem;
+        --s-0: 1rem;
+        --s-1: 1.25rem;
+        --s-2: 1.75rem;
+        --s-3: clamp(2rem, 4.5vw, 2.75rem);
+        --s-mark: clamp(3.4rem, 13vw, 8.5rem);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --paper: #121310;
+          --paper-2: #1b1c18;
+          --ink: #ecece6;
+          --muted: #9a9c92;
+          --rule: #34362f;
+          --accent: #4cc98a;
+          --accent-ink: #0d1a12;
+          --warn: #f08a6e;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --paper: #121310;
+        --paper-2: #1b1c18;
+        --ink: #ecece6;
+        --muted: #9a9c92;
+        --rule: #34362f;
+        --accent: #4cc98a;
+        --accent-ink: #0d1a12;
+        --warn: #f08a6e;
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: var(--s-0);
+        line-height: 1.6;
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--ink);
+        text-decoration-color: var(--accent);
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 3px;
+      }
+      a:hover {
+        color: var(--accent);
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-weight: 500;
+        line-height: 1.1;
+        text-wrap: balance;
+        letter-spacing: -0.015em;
+      }
+      h2 {
+        font-size: var(--s-3);
+      }
+      h3 {
+        font-size: var(--s-1);
+      }
+      p {
+        margin: 0;
+      }
+      .wrap {
+        max-width: 1080px;
+        margin-inline: auto;
+        padding-inline: 16px;
+      }
+      @media (min-width: 720px) {
+        .wrap {
+          padding-inline: 32px;
+        }
+      }
+      .mono {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        letter-spacing: 0.02em;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .measure {
+        max-width: 60ch;
+      }
+
+      /* ---------- top bar ---------- */
+      .top {
+        position: sticky;
+        top: env(safe-area-inset-top, 0px);
+        z-index: 20;
+        background: var(--paper);
+        border-bottom: 1px solid var(--ink);
+      }
+      .top .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px 24px;
+        min-height: 52px;
+        flex-wrap: wrap;
+        padding-block: 6px;
+      }
+      .top .logo {
+        font-family: var(--font-mark);
+        font-size: 1.3rem;
+        text-decoration: none;
+        color: var(--ink);
+        line-height: 1;
+      }
+      .top nav {
+        display: flex;
+        gap: 4px 20px;
+        flex-wrap: wrap;
+      }
+      .top nav a {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        text-decoration: none;
+        color: var(--ink);
+      }
+      .top nav a:hover {
+        color: var(--accent);
+        text-decoration: underline;
+      }
+
+      /* ---------- hero ---------- */
+      .hero {
+        padding-block: 72px 64px;
+        border-bottom: 1px solid var(--rule);
+      }
+      .hero-grid {
+        display: grid;
+        gap: 48px;
+        align-items: center;
+      }
+      @media (min-width: 900px) {
+        .hero-grid {
+          grid-template-columns: 1.4fr 1fr;
+        }
+      }
+      .mark {
+        font-family: var(--font-mark);
+        font-weight: 500;
+        font-size: var(--s-mark);
+        line-height: 0.9;
+        letter-spacing: -0.02em;
+        margin-top: 18px;
+      }
+      .mark .cur {
+        display: inline-block;
+        width: 0.42em;
+        height: 0.78em;
+        background: var(--accent);
+        vertical-align: -0.04em;
+        margin-left: 0.06em;
+        animation: blink 1.1s steps(1) infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      .lead {
+        font-size: var(--s-1);
+        max-width: 30ch;
+        margin-top: 28px;
+        line-height: 1.45;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 32px;
+      }
+      .next {
+        border: 1px solid var(--ink);
+      }
+      .next-h {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 12px;
+        border-bottom: 1px solid var(--ink);
+        background: var(--paper-2);
+      }
+      .next ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .next li a::after {
+        content: " →";
+        color: var(--accent);
+        opacity: 0;
+        transition: opacity 0.12s;
+      }
+      .next li a:hover::after {
+        opacity: 1;
+      }
+      .next li {
+        display: grid;
+        grid-template-columns: 5.2rem minmax(0, 1fr) auto;
+        gap: 12px;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--rule);
+        align-items: baseline;
+        line-height: 1.35;
+      }
+      .next li > .mono:first-child {
+        white-space: nowrap;
+      }
+      .next .sub {
+        display: block;
+        font-size: 0.75rem;
+        margin-top: 3px;
+      }
+      .next .pr {
+        font-variant-numeric: tabular-nums;
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+      .next li:last-child {
+        border-bottom: 0;
+      }
+      .next li a {
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .next li a:hover {
+        text-decoration: underline;
+      }
+
+      /* ---------- buttons ---------- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        padding: 10px 16px;
+        background: var(--paper);
+        color: var(--ink);
+        border: 1px solid var(--ink);
+        cursor: pointer;
+        text-decoration: none;
+        line-height: 1.1;
+        transition:
+          background 0.12s,
+          color 0.12s;
+      }
+      .btn:hover {
+        background: var(--ink);
+        color: var(--paper);
+      }
+      .btn.go {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--accent-ink);
+      }
+      .btn.go:hover {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--paper);
+      }
+      .btn[disabled] {
+        opacity: 0.5;
+        cursor: wait;
+      }
+
+      /* ---------- sections ---------- */
+      section {
+        padding-block: 72px;
+        border-bottom: 1px solid var(--rule);
+      }
+      .sec-head {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 40px;
+      }
+      @media (min-width: 860px) {
+        .sec-head {
+          grid-template-columns: 1fr 1fr;
+          align-items: end;
+        }
+      }
+      .label {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .label::before {
+        content: "/";
+        color: var(--accent);
+        margin-right: 2px;
+      }
+
+      /* ---------- workshops list ---------- */
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 18px;
+        margin-bottom: 20px;
+      }
+      .chip {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        background: none;
+        border: 0;
+        padding: 2px 0;
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .chip:hover {
+        color: var(--ink);
+      }
+      .chip[aria-pressed="true"] {
+        color: var(--ink);
+        text-decoration: underline;
+        text-decoration-color: var(--accent);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
+      }
+      .demo-note {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        color: var(--muted);
+        border-left: 2px solid var(--accent);
+        padding: 4px 12px;
+        margin-bottom: 24px;
+      }
+      .list {
+        border-top: 1px solid var(--ink);
+      }
+      .ws {
+        display: grid;
+        grid-template-columns: 7rem minmax(0, 1fr) 13rem;
+        gap: 16px 32px;
+        padding-block: 28px;
+        border-bottom: 1px solid var(--rule);
+      }
+      @media (max-width: 760px) {
+        .ws {
+          grid-template-columns: 1fr;
+        }
+      }
+      .ws-date {
+        display: grid;
+        align-content: start;
+        gap: 2px;
+      }
+      .ws-date .d {
+        font-family: var(--font-mono);
+        font-weight: 500;
+        font-size: 2.3rem;
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+      .ws-main {
+        display: grid;
+        gap: 8px;
+        align-content: start;
+        min-width: 0;
+      }
+      .ws-main h3 {
+        font-size: 1.45rem;
+      }
+      .ws-desc {
+        color: var(--ink);
+        max-width: 58ch;
+      }
+      .ws-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px 16px;
+      }
+      details.more summary {
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        color: var(--muted);
+        width: max-content;
+      }
+      details.more summary:hover {
+        color: var(--ink);
+      }
+      details.more dl {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 4px 14px;
+        margin: 10px 0 0;
+        font-size: 0.95rem;
+      }
+      details.more dt {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        color: var(--muted);
+        padding-top: 2px;
+      }
+      details.more dd {
+        margin: 0;
+      }
+      .ws-side {
+        display: grid;
+        gap: 12px;
+        align-content: start;
+        justify-items: start;
+      }
+      @media (min-width: 761px) {
+        .ws-side {
+          justify-items: end;
+          text-align: right;
+        }
+      }
+      .price {
+        font-size: 1.5rem;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+      }
+      .spots {
+        display: grid;
+        gap: 5px;
+      }
+      @media (min-width: 761px) {
+        .spots {
+          justify-items: end;
+        }
+      }
+      .xs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        max-width: 13rem;
+      }
+      .xs i {
+        width: 9px;
+        height: 9px;
+        border: 1px solid var(--rule);
+      }
+      .xs i.on {
+        background: var(--ink);
+        border-color: var(--ink);
+      }
+      .spots-label {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        color: var(--muted);
+      }
+      .spots-label.full {
+        color: var(--warn);
+      }
+      .empty {
+        padding: 32px 0;
+        color: var(--muted);
+      }
+
+      /* ---------- steps ---------- */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+        gap: 0;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        border-top: 1px solid var(--ink);
+        counter-reset: s;
+      }
+      .steps li {
+        padding: 20px 20px 4px 0;
+        display: grid;
+        gap: 8px;
+        align-content: start;
+      }
+      .steps li::before {
+        counter-increment: s;
+        content: "0" counter(s);
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        color: var(--accent);
+      }
+      .steps p {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      /* ---------- facilitate ---------- */
+      .cols {
+        display: grid;
+        gap: 40px;
+      }
+      @media (min-width: 760px) {
+        .cols {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .plain {
+        list-style: none;
+        padding: 0;
+        margin: 14px 0 0;
+        border-top: 1px solid var(--ink);
+      }
+      .plain li {
+        padding: 10px 0 10px 24px;
+        border-bottom: 1px solid var(--rule);
+        position: relative;
+      }
+      .plain li::before {
+        content: "+";
+        position: absolute;
+        left: 2px;
+        font-family: var(--font-mono);
+        color: var(--accent);
+      }
+      .plain.you li::before {
+        content: "→";
+      }
+      .models {
+        display: grid;
+        gap: 0;
+        margin-top: 56px;
+        border: 1px solid var(--ink);
+      }
+      @media (min-width: 760px) {
+        .models {
+          grid-template-columns: 1fr 1fr;
+        }
+        .models > div + div {
+          border-left: 1px solid var(--ink);
+        }
+      }
+      @media (max-width: 759px) {
+        .models > div + div {
+          border-top: 1px solid var(--ink);
+        }
+      }
+      .models > div {
+        padding: 24px;
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+      .figure {
+        font-family: var(--font-mark);
+        font-size: 2.8rem;
+        line-height: 1;
+      }
+      .models p {
+        color: var(--muted);
+      }
+      .models p.figure {
+        color: var(--ink);
+      }
+      .tl {
+        margin: 56px 0 0;
+        display: grid;
+        grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+        border-top: 1px solid var(--ink);
+      }
+      .tl dt,
+      .tl dd {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--rule);
+        margin: 0;
+      }
+      .tl dt {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        padding-top: 12px;
+        padding-right: 16px;
+      }
+      @media (max-width: 480px) {
+        .tl {
+          grid-template-columns: 1fr;
+        }
+        .tl dt {
+          border-bottom: 0;
+          padding-bottom: 0;
+        }
+      }
+
+      /* ---------- panels + forms ---------- */
+      .panel {
+        border: 1px solid var(--ink);
+        background: var(--paper);
+        min-width: 0;
+      }
+      .panel-h {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 6px 12px;
+        border-bottom: 1px solid var(--ink);
+        background: var(--paper-2);
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+      }
+      .panel-h .dots {
+        letter-spacing: 4px;
+        color: var(--muted);
+      }
+      .panel-b {
+        padding: 24px;
+      }
+      @media (max-width: 480px) {
+        .panel-b {
+          padding: 18px;
+        }
+      }
+      .form {
+        display: grid;
+        gap: 18px;
+      }
+      .form .two {
+        display: grid;
+        gap: 18px;
+      }
+      @media (min-width: 640px) {
+        .form .two {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+      }
+      .field label,
+      .field legend {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        color: var(--muted);
+      }
+      .hint {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      select,
+      textarea {
+        font: inherit;
+        font-size: 1rem;
+        width: 100%;
+        padding: 9px 0;
+        background: transparent;
+        color: var(--ink);
+        border: 0;
+        border-bottom: 1px solid var(--ink);
+        border-radius: 0;
+      }
+      select {
+        padding-right: 4px;
+      }
+      select option {
+        background: var(--paper);
+        color: var(--ink);
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 8px;
+      }
+      textarea {
+        min-height: 88px;
+        resize: vertical;
+        border: 1px solid var(--rule);
+        padding: 9px;
+      }
+      textarea:focus {
+        border-color: var(--accent);
+        outline: 1px solid var(--accent);
+      }
+      fieldset {
+        border: 0;
+        padding: 0;
+        margin: 0;
+        min-width: 0;
+      }
+      .checks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+        margin-top: 4px;
+      }
+      .checks label {
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        color: var(--ink);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      input[type="checkbox"],
+      input[type="radio"] {
+        accent-color: var(--accent);
+        width: 16px;
+        height: 16px;
+        margin: 0;
+      }
+      .hp {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .form-status {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        min-height: 1.3em;
+      }
+      .form-status.err {
+        color: var(--warn);
+      }
+      .success {
+        border-left: 2px solid var(--accent);
+        padding: 4px 0 4px 16px;
+        display: grid;
+        gap: 10px;
+      }
+      .form-wrap {
+        margin-top: 56px;
+      }
+
+      /* ---------- venues ---------- */
+      .perks {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0 0;
+        border-top: 1px solid var(--ink);
+      }
+      .perks li {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      /* ---------- about ---------- */
+      .mission {
+        font-size: clamp(1.6rem, 3.6vw, 2.4rem);
+        line-height: 1.2;
+        max-width: 26ch;
+        letter-spacing: -0.02em;
+        font-weight: 400;
+      }
+      .mission em {
+        font-style: normal;
+        color: var(--accent);
+      }
+      .hub {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+        border-top: 1px solid var(--ink);
+        margin-top: 20px;
+      }
+      .hub > div {
+        padding: 20px 20px 20px 0;
+        display: grid;
+        gap: 8px;
+        align-content: start;
+      }
+      .hub p {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .tiers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 28px;
+        margin-top: 14px;
+      }
+      .tiers span {
+        font-family: var(--font-mono);
+        font-size: var(--s-mono);
+        color: var(--muted);
+      }
+      .tiers b {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        font-weight: 500;
+        margin-right: 6px;
+        color: var(--ink);
+      }
+
+      /* ---------- faq ---------- */
+      .faq {
+        border-top: 1px solid var(--ink);
+        max-width: 780px;
+      }
+      .faq details {
+        border-bottom: 1px solid var(--rule);
+      }
+      .faq summary {
+        cursor: pointer;
+        padding: 16px 0;
+        font-weight: 500;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .faq summary::-webkit-details-marker {
+        display: none;
+      }
+      .faq summary::after {
+        content: "+";
+        font-family: var(--font-mono);
+        color: var(--accent);
+        flex: none;
+      }
+      .faq details[open] summary::after {
+        content: "–";
+      }
+      .faq details p {
+        padding: 0 0 18px;
+        color: var(--muted);
+        max-width: 62ch;
+      }
+
+      /* ---------- footer ---------- */
+      footer {
+        padding-block: 48px 28px;
+      }
+      footer .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 28px 48px;
+        align-items: flex-start;
+      }
+      footer .fmark {
+        font-family: var(--font-mark);
+        font-size: 2rem;
+        line-height: 1;
+      }
+      footer .links {
+        display: grid;
+        gap: 6px;
+      }
+      .statusbar {
+        margin-top: 48px;
+        border-top: 1px solid var(--ink);
+        padding-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px 24px;
+        color: var(--muted);
+      }
+
+      /* ---------- dialog ---------- */
+      dialog {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: var(--ink);
+        max-width: min(540px, calc(100vw - 24px));
+        width: 100%;
+        max-height: calc(100dvh - 24px);
+      }
+      dialog::backdrop {
+        background: rgba(18, 19, 16, 0.5);
+      }
+      dialog .panel {
+        box-shadow: 6px 6px 0 var(--ink);
+        max-height: calc(100dvh - 24px);
+        display: flex;
+        flex-direction: column;
+      }
+      dialog .panel-b {
+        overflow: auto;
+      }
+      .x {
+        background: none;
+        border: 0;
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        cursor: pointer;
+        color: var(--ink);
+        padding: 0 2px;
+        line-height: 1;
+      }
+      .x:hover {
+        color: var(--accent);
+      }
+      .dlg-sum {
+        border-top: 1px solid var(--ink);
+        border-bottom: 1px solid var(--ink);
+        padding: 12px 0;
+        display: grid;
+        gap: 2px;
+        font-size: 0.95rem;
+      }
+      .dlg-sum b {
+        font-weight: 500;
+        font-size: 1.15rem;
+      }
+      .policy-box {
+        border: 1px solid var(--ink);
+        background: var(--paper-2);
+        padding: 12px 14px;
+        font-size: 0.9rem;
+        display: grid;
+        gap: 8px;
+        line-height: 1.45;
+      }
+      .policy-box ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 4px;
+      }
+      .ref {
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        border: 1px solid var(--ink);
+        padding: 2px 8px;
+        user-select: all;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="logo" href="#top">Skill Spill</a>
+        <nav aria-label="Main">
+          <a href="#workshops">workshops</a>
+          <a href="#about">about</a>
+          <a href="#share">share a skill</a>
+          <a href="#venues">venues</a>
+          <a href="#faq">faq</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <div class="hero">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="mono muted">skill sharing · Helsinki</p>
+            <h1 class="mark">
+              Skill<br />Spill<span class="cur" aria-hidden="true"></span>
+            </h1>
+            <p class="lead">
+              Small, hands-on workshops led by local makers. Come to learn a
+              skill, stay for the people around the table.
+            </p>
+            <div class="actions">
+              <a class="btn go" href="#workshops">See upcoming workshops →</a>
+              <a class="btn" href="#share">Share a skill</a>
+            </div>
+          </div>
+          <div class="next" aria-label="Upcoming workshops">
+            <div class="next-h mono">
+              <span>upcoming_workshops</span
+              ><span class="muted" id="season">Autumn 2026</span>
+            </div>
+            <ol id="next-list">
+              <li>
+                <span class="mono muted">…</span
+                ><span class="muted">Loading</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <section id="workshops">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label">workshops</p>
+              <h2>Upcoming workshops</h2>
+            </div>
+            <p class="muted measure">
+              Small, relaxed, hands-on evenings. Pick one, save your spot, and
+              pay in advance with MobilePay so the workshop can go ahead.
+            </p>
+          </div>
+          <p id="demo-note" class="demo-note" hidden>
+            Preview: registrations aren't saved until the site is connected to
+            your Google Sheet.
+          </p>
+          <div class="list" id="cards">
+            <p class="empty mono">Loading workshops…</p>
+          </div>
+
+          <h3
+            style="margin-top: 72px; margin-bottom: 20px; font-size: var(--s-2)"
+          >
+            How booking works
+          </h3>
+          <ol class="steps">
+            <li>
+              <h3>Save your spot</h3>
+              <p>
+                Register with the form. Student and employed prices are listed
+                on each workshop.
+              </p>
+            </li>
+            <li>
+              <h3>Pay in advance</h3>
+              <p>
+                Pay via MobilePay Box
+                <b class="mono" style="color: var(--ink)">8051YC</b> with your
+                booking reference. No MobilePay? Get in touch and we'll sort
+                something out.
+              </p>
+            </li>
+            <li>
+              <h3>We confirm</h3>
+              <p>
+                Each workshop runs with at least 5 paid participants. We'll let
+                you know if anything changes.
+              </p>
+            </li>
+            <li>
+              <h3>Come and make</h3>
+              <p>
+                Arrive a few minutes early so everyone can settle in and we
+                start together.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="wrap">
+          <p class="label">about</p>
+          <p class="mission">
+            Everyone knows something worth sharing. Skill Spill is where it
+            <em>spills over</em>.
+          </p>
+          <div class="cols" style="margin-top: 32px; align-items: start">
+            <p class="measure">
+              Skill Spill is a relaxed, peer-to-peer space for practical skills,
+              creative hobbies and open knowledge-sharing. Local artists and
+              makers lead the sessions, but the room learns from each other: how
+              someone else threads a needle, sorts their files or fixes a hem.
+            </p>
+            <p class="measure muted">
+              We keep groups small and the atmosphere easy, so you can ask the
+              obvious question, make a mess, and leave with something real: a
+              new skill, a finished thing, and a few new faces you'll see next
+              time.
+            </p>
+          </div>
+          <div class="hub">
+            <div>
+              <p class="mono muted">learn by doing</p>
+              <h3>Hands on, from minute one</h3>
+              <p>Short intros, then making. Curiosity over perfection.</p>
+            </div>
+            <div>
+              <p class="mono muted">peer to peer</p>
+              <h3>Everyone brings something</h3>
+              <p>
+                Questions, tips and tricks travel around the table, not just
+                from the front.
+              </p>
+            </div>
+            <div>
+              <p class="mono muted">fair & local</p>
+              <h3>Artists paid fairly</h3>
+              <p>
+                Your ticket supports local facilitators and small independent
+                venues.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top: 56px">
+            <div class="panel-h">
+              <span>join_the_community</span
+              ><span class="dots" aria-hidden="true">□×</span>
+            </div>
+            <div class="panel-b cols" style="gap: 28px; align-items: end">
+              <div>
+                <h3 style="font-size: var(--s-2)">Stay in the loop</h3>
+                <p class="muted" style="margin-top: 8px">
+                  New workshops, last-minute spots and community news. Join the
+                  Telegram channel, follow along on Instagram, or leave your
+                  email.
+                </p>
+                <div class="actions" style="margin-top: 18px">
+                  <a
+                    class="btn"
+                    href="https://t.me/+VEVrRvJ6kuRhN2Fh"
+                    target="_blank"
+                    rel="noopener"
+                    >Telegram ↗</a
+                  >
+                  <a
+                    class="btn"
+                    href="https://www.instagram.com/skillspill.workshops/"
+                    target="_blank"
+                    rel="noopener"
+                    >Instagram ↗</a
+                  >
+                </div>
+              </div>
+              <form class="form" data-type="newsletter" novalidate>
+                <div class="hp" aria-hidden="true">
+                  <label
+                    >Leave empty
+                    <input
+                      type="text"
+                      name="website_url"
+                      tabindex="-1"
+                      autocomplete="off"
+                  /></label>
+                </div>
+                <div class="field">
+                  <label for="n-email">Email</label
+                  ><input
+                    id="n-email"
+                    name="email"
+                    type="email"
+                    required
+                    autocomplete="email"
+                  />
+                </div>
+                <div>
+                  <button class="btn go" type="submit">Join the list</button>
+                </div>
+                <p class="form-status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="share">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label">share a skill</p>
+              <h2>Have something to share?</h2>
+            </div>
+            <p class="muted measure">
+              Embroidery, coding, bread, bike repair, spreadsheets. If you can
+              show a small group how to do it, we'd love to hear from you.
+              First-time teachers welcome.
+            </p>
+          </div>
+
+          <div class="cols">
+            <div>
+              <h3>We take care of</h3>
+              <ul class="plain">
+                <li>Finding the venue and the date</li>
+                <li>Registrations, payments and participant emails</li>
+                <li>Promotion across our channels</li>
+                <li>Hosting on the day, so you can focus on teaching</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Fair pay, shared success</h3>
+              <p
+                class="muted"
+                style="
+                  margin-top: 14px;
+                  padding-top: 12px;
+                  border-top: 1px solid var(--ink);
+                "
+              >
+                Facilitators receive the majority of each workshop's ticket
+                income, with agreed material costs covered first. The fuller the
+                room, the more you earn, and we grow the community together.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel form-wrap" id="propose">
+            <div class="panel-h">
+              <span>share_a_skill</span
+              ><span class="dots" aria-hidden="true">□×</span>
+            </div>
+            <div class="panel-b">
+              <h3 style="font-size: var(--s-2)">Propose a workshop</h3>
+              <p class="muted" style="margin: 6px 0 24px">
+                A rough idea is enough. We'll get back to you within a week to
+                shape it together.
+              </p>
+              <form class="form" data-type="facilitator" novalidate>
+                <div class="hp" aria-hidden="true">
+                  <label
+                    >Leave empty
+                    <input
+                      type="text"
+                      name="website_url"
+                      tabindex="-1"
+                      autocomplete="off"
+                  /></label>
+                </div>
+                <div class="two">
+                  <div class="field">
+                    <label for="f-name">Name *</label
+                    ><input
+                      id="f-name"
+                      name="name"
+                      type="text"
+                      required
+                      autocomplete="name"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="f-email">Email *</label
+                    ><input
+                      id="f-email"
+                      name="email"
+                      type="email"
+                      required
+                      autocomplete="email"
+                    />
+                  </div>
+                </div>
+                <div class="two">
+                  <div class="field">
+                    <label for="f-title">What would you teach? *</label
+                    ><input
+                      id="f-title"
+                      name="title"
+                      type="text"
+                      required
+                      placeholder="e.g. Sashiko mending"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="f-link">Website or Instagram</label
+                    ><input
+                      id="f-link"
+                      name="link"
+                      type="text"
+                      placeholder="@handle"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="f-desc">Tell us a bit about it *</label
+                  ><textarea
+                    id="f-desc"
+                    name="description"
+                    required
+                    placeholder="What people would learn or make, and anything you'd need"
+                  ></textarea>
+                </div>
+                <div><button class="btn go" type="submit">Send →</button></div>
+                <p class="form-status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="venues">
+        <div class="wrap cols" style="align-items: start">
+          <div>
+            <p class="label">venues</p>
+            <h2>Host a workshop at your space</h2>
+            <p class="muted measure" style="margin-top: 16px">
+              Cafés, studios, shops, libraries. If you have tables and a bit of
+              room, we can bring a workshop and a new crowd to you. We handle
+              bookings, payments and hosting.
+            </p>
+            <p class="muted measure" style="margin-top: 12px">
+              Current partner venues include Byroo Cafe and Zestii Kitchens.
+            </p>
+          </div>
+          <div class="panel" id="venue-form">
+            <div class="panel-h">
+              <span>become_a_venue</span
+              ><span class="dots" aria-hidden="true">□×</span>
+            </div>
+            <div class="panel-b">
+              <form class="form" data-type="venue" novalidate>
+                <div class="hp" aria-hidden="true">
+                  <label
+                    >Leave empty
+                    <input
+                      type="text"
+                      name="website_url"
+                      tabindex="-1"
+                      autocomplete="off"
+                  /></label>
+                </div>
+                <div class="field">
+                  <label for="v-venue">Venue or organisation *</label
+                  ><input id="v-venue" name="venue" type="text" required />
+                </div>
+                <div class="two">
+                  <div class="field">
+                    <label for="v-name">Contact person *</label
+                    ><input
+                      id="v-name"
+                      name="name"
+                      type="text"
+                      required
+                      autocomplete="name"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="v-email">Email *</label
+                    ><input
+                      id="v-email"
+                      name="email"
+                      type="email"
+                      required
+                      autocomplete="email"
+                    />
+                  </div>
+                </div>
+                <div class="two">
+                  <div class="field">
+                    <label for="v-addr">Address</label
+                    ><input id="v-addr" name="address" type="text" />
+                  </div>
+                  <div class="field">
+                    <label for="v-cap">Seats at tables</label
+                    ><input
+                      id="v-cap"
+                      name="capacity"
+                      type="text"
+                      placeholder="e.g. 12"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="v-notes"
+                    >When is the space free, and anything else?</label
+                  ><textarea id="v-notes" name="notes"></textarea>
+                </div>
+                <div><button class="btn go" type="submit">Send →</button></div>
+                <p class="form-status" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label">faq</p>
+              <h2>Questions &amp; policy</h2>
+            </div>
+          </div>
+          <div class="faq">
+            <details>
+              <summary>I've never done this before. Can I join?</summary>
+              <p>
+                Yes. Our workshops are made for beginners unless the listing
+                says otherwise. No previous experience needed.
+              </p>
+            </details>
+            <details>
+              <summary>How do I pay?</summary>
+              <p>
+                Pay in advance via MobilePay Box <b>8051YC</b> and add your
+                booking reference to the message. Paying ahead secures your spot
+                and helps the workshop reach its minimum. If MobilePay isn't an
+                option for you, email skillspillworkshops@gmail.com and we'll
+                make another arrangement.
+              </p>
+            </details>
+            <details>
+              <summary>
+                What's the difference between student and employed prices?
+              </summary>
+              <p>
+                We offer a lower student price to keep workshops accessible.
+                Choose the one that fits your situation when you register.
+              </p>
+            </details>
+            <details>
+              <summary>Are materials included?</summary>
+              <p>
+                Yes, unless the listing says otherwise. Some workshops ask you
+                to bring something, like clothes to mend or your laptop.
+              </p>
+            </details>
+            <details id="policy">
+              <summary>Cancellation policy</summary>
+              <p>
+                Plans change, so let us know as soon as you can.<br /><br /><b
+                  >More than 48 hours before:</b
+                >
+                full refund, or transfer your place to someone else.<br /><b
+                  >Less than 48 hours before:</b
+                >
+                the fee is non-refundable, but you can transfer your place. Just
+                tell us their name in advance.<br /><b>No-shows:</b> we can't
+                offer refunds or transfers for missed workshops without notice.
+                Places are limited, and early notice lets us offer your spot to
+                someone else.
+              </p>
+            </details>
+            <details>
+              <summary>What if a workshop doesn't reach the minimum?</summary>
+              <p>
+                To keep workshops small, personal and financially sustainable,
+                each one needs at least 5 paid participants to go ahead. If we
+                have to cancel or reschedule, you get a full refund or can move
+                your registration to another workshop. We'll always tell you as
+                early as possible.
+              </p>
+            </details>
+            <details>
+              <summary>Should I arrive early?</summary>
+              <p>
+                If you can, arrive a few minutes before the start so everyone
+                can get settled and we can begin together.
+              </p>
+            </details>
+            <details>
+              <summary>How do I contact you?</summary>
+              <p>
+                Email
+                <span style="user-select: all; color: var(--ink)"
+                  >skillspillworkshops@gmail.com</span
+                >, message us on
+                <a
+                  href="https://www.instagram.com/skillspill.workshops/"
+                  target="_blank"
+                  rel="noopener"
+                  >Instagram</a
+                >, or reply to your booking email.
+              </p>
+            </details>
+          </div>
+          <p class="muted" style="margin-top: 24px">
+            Thank you for supporting small, independent workshops.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="row">
+          <div>
+            <p class="fmark">Skill Spill</p>
+            <p class="muted" style="margin-top: 10px; max-width: 34ch">
+              Practical skills, shared around the table.
+            </p>
+          </div>
+          <div class="links">
+            <a
+              href="https://t.me/+VEVrRvJ6kuRhN2Fh"
+              target="_blank"
+              rel="noopener"
+              >Telegram ↗</a
+            >
+            <a
+              href="https://www.instagram.com/skillspill.workshops/"
+              target="_blank"
+              rel="noopener"
+              >Instagram ↗</a
+            >
+            <p id="contact-email" hidden></p>
+            <a href="#propose">Share a skill</a>
+            <a href="#venue-form">Host a workshop</a>
+          </div>
+        </div>
+        <div class="statusbar mono">
+          <span>© <span id="year">2026</span> Skill Spill</span
+          ><span>building a community one workshop at a time</span>
+        </div>
+      </div>
+    </footer>
+
+    <dialog id="reg-dialog" aria-labelledby="reg-title">
+      <div class="panel">
+        <div class="panel-h">
+          <span id="reg-bar">register</span
+          ><button type="button" class="x" data-close aria-label="Close">
+            ×
+          </button>
+        </div>
+        <div class="panel-b">
+          <div id="reg-form-wrap">
+            <h3
+              id="reg-title"
+              style="font-size: var(--s-2); margin-bottom: 16px"
+            >
+              Save your spot
+            </h3>
+            <div class="dlg-sum" id="reg-sum"></div>
+            <form
+              class="form"
+              id="reg-form"
+              novalidate
+              style="margin-top: 20px"
+            >
+              <div class="hp" aria-hidden="true">
+                <label
+                  >Leave empty
+                  <input
+                    type="text"
+                    name="website_url"
+                    tabindex="-1"
+                    autocomplete="off"
+                /></label>
+              </div>
+              <input type="hidden" name="workshop_id" />
+              <div class="field">
+                <label for="r-name">Full name *</label
+                ><input
+                  id="r-name"
+                  name="name"
+                  type="text"
+                  required
+                  autocomplete="name"
+                />
+              </div>
+              <div class="two">
+                <div class="field">
+                  <label for="r-email">Email *</label
+                  ><input
+                    id="r-email"
+                    name="email"
+                    type="email"
+                    required
+                    autocomplete="email"
+                  />
+                </div>
+                <div class="field">
+                  <label for="r-phone">Phone</label
+                  ><input
+                    id="r-phone"
+                    name="phone"
+                    type="tel"
+                    autocomplete="tel"
+                  />
+                </div>
+              </div>
+              <div class="two">
+                <div class="field">
+                  <label for="r-ticket">Ticket</label
+                  ><select id="r-ticket" name="ticket"></select>
+                </div>
+                <div class="field">
+                  <label for="r-seats">Spots</label
+                  ><select id="r-seats" name="seats">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="r-notes">Access needs, allergies or questions</label
+                ><textarea
+                  id="r-notes"
+                  name="notes"
+                  style="min-height: 64px"
+                ></textarea>
+              </div>
+              <div class="policy-box" aria-labelledby="pol-h">
+                <p class="mono" id="pol-h">cancellation policy</p>
+                <ul>
+                  <li>
+                    <b>More than 48 hours before:</b> full refund, or transfer
+                    your place to someone else.
+                  </li>
+                  <li>
+                    <b>Less than 48 hours before:</b> no refund, but you can
+                    transfer your place. Tell us their name in advance.
+                  </li>
+                  <li><b>No-show without notice:</b> no refund or transfer.</li>
+                  <li>
+                    <b>Fewer than 5 paid participants:</b> we cancel or
+                    reschedule, and you get a full refund or move to another
+                    workshop.
+                  </li>
+                </ul>
+                <p class="muted">
+                  To cancel or transfer, email
+                  <span style="user-select: all; color: var(--ink)"
+                    >skillspillworkshops@gmail.com</span
+                  >.
+                </p>
+              </div>
+              <div
+                class="checks"
+                style="flex-direction: column; align-items: flex-start"
+              >
+                <label
+                  ><input type="checkbox" name="agree" value="yes" required /> I
+                  agree to the cancellation policy *</label
+                >
+                <label
+                  ><input type="checkbox" name="newsletter" value="yes" /> Send
+                  me news about future workshops</label
+                >
+              </div>
+              <div>
+                <button class="btn go" type="submit" id="reg-submit">
+                  Register →
+                </button>
+              </div>
+              <p class="form-status" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+          <div id="reg-done" hidden></div>
+        </div>
+      </div>
+    </dialog>
+
+    <script>
+      /* ============================================================
+   SETTINGS: edit these after setup (see SETUP.md)
+   ============================================================ */
+      const SKILLSPILL = {
+        endpoint:
+          "https://script.google.com/macros/s/AKfycbzPZIUU4jX8KmRAyWs7BHfJsdkpWXm03WYdD--QYI30dg3LLMvfxrpZwO1UDDMbGHFX6g/exec", // paste your Google Apps Script Web App URL here
+        contactEmail: "skillspillworkshops@gmail.com", // shown in the footer and FAQ
+        mobilePayBox: "8051YC", // shown in payment instructions
+        season: "Autumn 2026",
+      };
+
+      /* Programme shown while `endpoint` is empty. Once connected, workshops come from the Google Sheet. */
+      const BYROO = {
+        venue: "Byroo Cafe",
+        address: "Laivurinrinne 1, 00120 Helsinki",
+      };
+      const SAMPLE_WORKSHOPS = [
+        {
+          id: "EMB-1013",
+          title: "Embroidery 101",
+          date: "2026-10-13",
+          start: "18:00",
+          end: "20:00",
+          ...BYROO,
+          description:
+            "Learn the basics to get started with embroidery: working with threads and needles, a few essential stitches, and a simple design to start using what you've learned.",
+          level: "Beginner",
+          price_student: 20,
+          price_employed: 30,
+          materials: "All materials provided.",
+        },
+        {
+          id: "DARN-1020",
+          title: "Clothing Repair: Darning",
+          date: "2026-10-20",
+          start: "18:00",
+          end: "20:00",
+          ...BYROO,
+          description:
+            "Learn different techniques for repairing clothing and textiles. Bring your ripped, torn and worn-out pieces, and we'll restore them to use and make them more beautiful in the process.",
+          level: "Beginner",
+          price_student: 15,
+          price_employed: 20,
+          materials: "Some materials and tools provided.",
+          bring: "Your ripped, torn or worn textiles.",
+        },
+        {
+          id: "DD-1104",
+          title: "Digital Declutter",
+          date: "2026-11-04",
+          start: "18:00",
+          end: "20:00",
+          venue: "Zestii Kitchens",
+          address: "Kaarlenkatu 15, 00530 Helsinki",
+          facilitator: "Katie Ballinger",
+          facilitator_bio:
+            "Katie is an artist from Canada and a jack of all trades, from visual arts to coding. She worked in Silicon Valley tech for five years as a self-taught software engineer and recently graduated from Aalto University's New Media programme. A big collector of data herself, she's been cleaning up her own digital mess, and noticed how little help there is for it.",
+          description:
+            "A relaxed, hands-on co-working session for a clearer inbox, better file organisation and smoother daily workflows. A short practical intro, then we work on our own setups side by side with light guidance and tips.",
+          level: "All levels",
+          price_student: 20,
+          price_employed: 25,
+          pay_by: "2026-11-01",
+          bring:
+            "Your work computer, any drives or files you want to tackle, and a rough idea of what's been slowing you down.",
+          notes: "You're welcome to order from the menu at extra cost.",
+        },
+        {
+          id: "BOOK-1118",
+          title: "Pocket Book Making",
+          date: "2026-11-18",
+          start: "",
+          end: "",
+          ...BYROO,
+          description:
+            "Make a pocket-sized book from scratch. Choose A5 or A6, dot-grid or lined pages, decorate a sturdy colourful cover, and bind it with staples. Bring your own paper or binding materials if you want to experiment.",
+          level: "Beginner",
+          price_student: 20,
+          price_employed: 30,
+          materials: "All tools and materials provided.",
+        },
+      ];
+
+      const MIN_PARTICIPANTS = 5;
+      const $ = (s, el = document) => el.querySelector(s);
+      const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+      const esc = (s) =>
+        String(s ?? "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const isDemo = () => !SKILLSPILL.endpoint;
+      let workshops = [];
+
+      $("#year").textContent = new Date().getFullYear();
+      $("#season").textContent = SKILLSPILL.season || "";
+      if (SKILLSPILL.contactEmail) {
+        const c = $("#contact-email");
+        c.hidden = false;
+        c.innerHTML =
+          '<span style="user-select:all">' +
+          esc(SKILLSPILL.contactEmail) +
+          "</span>";
+      }
+
+      const D = (iso) => new Date(iso + "T12:00:00");
+      const fmt = (iso, o) => {
+        const d = D(iso);
+        return isNaN(d) ? iso : new Intl.DateTimeFormat("en-GB", o).format(d);
+      };
+      const fmtDate = (iso) =>
+        fmt(iso, { weekday: "short", day: "numeric", month: "short" });
+      const timeOf = (w) =>
+        w.start ? `${w.start}${w.end ? "–" + w.end : ""}` : "time TBC";
+      const hasCap = (w) => Number(w.capacity) > 0;
+      const isFull = (w) => hasCap(w) && !(Number(w.spotsLeft) > 0);
+      const mapUrl = (w) =>
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(
+          [w.venue, w.address || "Helsinki"].filter(Boolean).join(", "),
+        );
+      const priceText = (w) =>
+        w.price_student &&
+        w.price_employed &&
+        w.price_student != w.price_employed
+          ? `€${esc(w.price_student)} / €${esc(w.price_employed)}`
+          : `€${esc(w.price_employed || w.price_student)}`;
+
+      async function loadWorkshops() {
+        if (isDemo()) {
+          workshops = SAMPLE_WORKSHOPS;
+          $("#demo-note").hidden = false;
+        } else {
+          try {
+            const r = await fetch(SKILLSPILL.endpoint + "?action=workshops");
+            workshops = (await r.json()).workshops || [];
+          } catch (e) {
+            $("#cards").innerHTML =
+              '<p class="empty">Couldn\'t load workshops right now. Refresh the page, or check Instagram or Telegram for the latest programme.</p>';
+            $("#next-list").innerHTML =
+              '<li><span></span><span class="muted">See Instagram for dates.</span></li>';
+            return;
+          }
+        }
+        workshops.sort((a, b) =>
+          (a.date + (a.start || "99")).localeCompare(
+            b.date + (b.start || "99"),
+          ),
+        );
+        renderCards();
+        renderNext();
+      }
+
+      function renderNext() {
+        const n = workshops;
+        $("#next-list").innerHTML = n.length
+          ? n
+              .map(
+                (w) =>
+                  `<li><span class="mono muted">${esc(fmt(w.date, { weekday: "short" }))} ${esc(fmt(w.date, { day: "numeric", month: "numeric" }))}</span><span><a href="#ws-${esc(w.id)}">${esc(w.title)}</a><span class="mono muted sub">${esc(w.venue)} · ${esc(timeOf(w))}</span></span><span class="pr muted">${isFull(w) ? '<span class="mono" style="color:var(--warn)">full</span>' : "from €" + esc(Math.min(...[w.price_student, w.price_employed].map(Number).filter((x) => x > 0)))}</span></li>`,
+              )
+              .join("")
+          : '<li><span></span><span class="muted">New workshops coming soon.</span></li>';
+      }
+
+      function spotsHtml(w) {
+        if (!hasCap(w))
+          return `<span class="spots-label">min. ${MIN_PARTICIPANTS} to run</span>`;
+        const cap = Number(w.capacity),
+          left = Math.max(0, Math.min(cap, Number(w.spotsLeft) || 0));
+        let cells = "";
+        for (let i = 0; i < cap; i++)
+          cells += `<i class="${i < cap - left ? "on" : ""}"></i>`;
+        return `<div class="spots"><div class="xs" aria-hidden="true">${cells}</div><span class="spots-label ${left ? "" : "full"}">${left ? `${left} of ${cap} spots left` : "full · waitlist open"}</span></div>`;
+      }
+
+      function renderCards() {
+        if (!workshops.length) {
+          $("#cards").innerHTML =
+            '<p class="empty">No workshops listed right now. Join Telegram or the email list to hear about the next ones.</p>';
+          return;
+        }
+        $("#cards").innerHTML = workshops
+          .map((w) => {
+            const full = isFull(w);
+            const where = w.address
+              ? `${esc(w.venue)}, ${esc(w.address)}`
+              : esc(w.venue);
+            return `<article class="ws" id="ws-${esc(w.id)}">
+      <div class="ws-date"><span class="d">${esc(fmt(w.date, { day: "numeric" }))}</span><span class="mono">${esc(fmt(w.date, { month: "short" }))} · ${esc(fmt(w.date, { weekday: "short" }))}</span><span class="mono muted">${esc(timeOf(w))}</span></div>
+      <div class="ws-main">
+        <p class="mono muted">${esc((w.level || "").toLowerCase())}${w.facilitator ? " · with " + esc(w.facilitator) : ""}</p>
+        <h3>${esc(w.title)}</h3>
+        <p class="ws-desc">${esc(w.description)}</p>
+        <p class="ws-meta muted" style="font-size:.95rem"><a href="${mapUrl(w)}" target="_blank" rel="noopener" style="color:inherit">${where} ↗</a></p>
+        <details class="more"><summary>details</summary><dl>
+          ${w.materials ? `<dt>materials</dt><dd>${esc(w.materials)}</dd>` : ""}
+          ${w.bring ? `<dt>bring</dt><dd>${esc(w.bring)}</dd>` : ""}
+          ${w.notes ? `<dt>food</dt><dd>${esc(w.notes)}</dd>` : ""}
+          ${w.facilitator_bio ? `<dt>facilitator</dt><dd>${esc(w.facilitator_bio)}</dd>` : ""}
+          <dt>payment</dt><dd>MobilePay Box ${esc(SKILLSPILL.mobilePayBox)}, ${w.pay_by ? "by " + esc(fmt(w.pay_by, { day: "numeric", month: "long" })) : "in advance"}</dd>
+          <dt>minimum</dt><dd>${MIN_PARTICIPANTS} paid participants for the workshop to go ahead</dd>
+        </dl></details>
+      </div>
+      <div class="ws-side">
+        <div><p class="price">${priceText(w)}</p>${w.price_student && w.price_employed && w.price_student != w.price_employed ? '<p class="mono muted" style="margin-top:4px">student / employed</p>' : ""}</div>
+        ${spotsHtml(w)}
+        <button class="btn ${full ? "" : "go"}" type="button" data-register="${esc(w.id)}">${full ? "Join waitlist" : "Register →"}</button>
+      </div></article>`;
+          })
+          .join("");
+      }
+
+      async function send(payload) {
+        if (isDemo()) {
+          await new Promise((r) => setTimeout(r, 600));
+          if (payload.type === "registration") {
+            const w = workshops.find((x) => x.id === payload.workshop_id);
+            const price =
+              payload.ticket === "Student" ? w.price_student : w.price_employed;
+            return {
+              ok: true,
+              status: isFull(w) ? "waitlist" : "registered",
+              ref: "SS-" + Math.random().toString(36).slice(2, 7).toUpperCase(),
+              amount: (Number(price) || 0) * (Number(payload.seats) || 1),
+              payBy: w.pay_by || "",
+              demo: true,
+            };
+          }
+          return { ok: true, demo: true };
+        }
+        const r = await fetch(SKILLSPILL.endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        });
+        return r.json();
+      }
+
+      function formToObject(form) {
+        const o = {};
+        new FormData(form).forEach((v, k) => {
+          o[k] = k in o ? [].concat(o[k], v) : v;
+        });
+        Object.keys(o).forEach((k) => {
+          if (Array.isArray(o[k])) o[k] = o[k].join(", ");
+        });
+        return o;
+      }
+      function validate(form) {
+        for (const el of $$("[required]", form)) {
+          const bad =
+            el.type === "checkbox"
+              ? !el.checked
+              : !el.value.trim() ||
+                (el.type === "email" &&
+                  !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()));
+          if (bad) {
+            el.focus();
+            const lab =
+              form
+                .querySelector(`label[for="${el.id}"]`)
+                ?.textContent.replace("*", "")
+                .trim() || "This field";
+            return el.type === "checkbox"
+              ? "Please tick the box to confirm."
+              : el.type === "email" && el.value
+                ? "Please check the email address."
+                : `${lab} is needed.`;
+          }
+        }
+        return "";
+      }
+
+      const THANKS = {
+        facilitator: [
+          "Thanks, idea received.",
+          "We'll reply by email within a week to shape it together.",
+        ],
+        venue: [
+          "Thanks, venue noted.",
+          "We'll be in touch by email to talk about what could work in your space.",
+        ],
+        newsletter: [
+          "You're on the list.",
+          "We'll email you about new workshops and community news.",
+        ],
+      };
+      $$("form[data-type]").forEach((form) =>
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const status = $(".form-status", form),
+            err = validate(form);
+          if (err) {
+            status.textContent = err;
+            status.className = "form-status err";
+            return;
+          }
+          const btn = $("button[type=submit]", form);
+          btn.disabled = true;
+          status.className = "form-status";
+          status.textContent = "Sending…";
+          try {
+            const res = await send({
+              type: form.dataset.type,
+              ...formToObject(form),
+            });
+            if (!res.ok) throw new Error(res.error || "failed");
+            const [h, p] = THANKS[form.dataset.type];
+            form.outerHTML = `<div class="success" role="status"><h3>${h}</h3><p class="muted">${p}</p>${res.demo ? '<p class="mono muted">preview mode: nothing was sent</p>' : ""}</div>`;
+          } catch (ex) {
+            btn.disabled = false;
+            status.className = "form-status err";
+            status.textContent =
+              "That didn't go through. Check your connection and try again.";
+          }
+        }),
+      );
+
+      /* ---------- registration dialog ---------- */
+      const dlg = $("#reg-dialog"),
+        regForm = $("#reg-form");
+      let current = null;
+      document.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-register]");
+        if (!b) return;
+        current = workshops.find((w) => w.id === b.dataset.register);
+        if (!current) return;
+        const full = isFull(current);
+        $("#reg-form-wrap").hidden = false;
+        $("#reg-done").hidden = true;
+        regForm.reset();
+        regForm.workshop_id.value = current.id;
+        $(".form-status", regForm).textContent = "";
+        $("#reg-submit").disabled = false;
+        $("#reg-title").textContent = full
+          ? "Join the waitlist"
+          : "Save your spot";
+        $("#reg-submit").textContent = full ? "Join waitlist →" : "Register →";
+        $("#reg-bar").textContent = full ? "waitlist" : "register";
+        const t = regForm.ticket;
+        t.innerHTML = "";
+        if (current.price_student)
+          t.insertAdjacentHTML(
+            "beforeend",
+            `<option value="Student">Student · €${esc(current.price_student)}</option>`,
+          );
+        if (current.price_employed)
+          t.insertAdjacentHTML(
+            "beforeend",
+            `<option value="Employed">Employed · €${esc(current.price_employed)}</option>`,
+          );
+        const max =
+          !hasCap(current) || full ? 3 : Math.min(3, Number(current.spotsLeft));
+        regForm.seats.innerHTML = "";
+        for (let i = 1; i <= max; i++)
+          regForm.seats.insertAdjacentHTML(
+            "beforeend",
+            `<option value="${i}">${i}</option>`,
+          );
+        $("#reg-sum").innerHTML =
+          `<b>${esc(current.title)}</b><span>${esc(fmtDate(current.date))}, ${esc(timeOf(current))} · ${esc(current.venue)}</span><span class="muted">${priceText(current)}${current.price_student && current.price_employed && current.price_student != current.price_employed ? " student / employed" : ""}${full ? " · currently full" : ""}</span>`;
+        dlg.showModal();
+        setTimeout(() => $("#r-name").focus(), 30);
+      });
+      dlg.addEventListener("click", (e) => {
+        if (e.target.closest("[data-close]") || e.target === dlg) {
+          dlg.close();
+          if (e.target.closest('a[href="#policy"]')) $("#policy").open = true;
+        }
+      });
+      document.addEventListener("click", (e) => {
+        if (e.target.closest('a[href="#policy"]')) {
+          const p = $("#policy");
+          if (p) p.open = true;
+        }
+      });
+
+      regForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const status = $(".form-status", regForm),
+          err = validate(regForm);
+        if (err) {
+          status.textContent = err;
+          status.className = "form-status err";
+          return;
+        }
+        const btn = $("#reg-submit");
+        btn.disabled = true;
+        status.className = "form-status";
+        status.textContent = "Saving your spot…";
+        try {
+          const data = formToObject(regForm),
+            res = await send({ type: "registration", ...data });
+          if (!res.ok) throw new Error(res.error || "failed");
+          const wait = res.status === "waitlist";
+          const by = res.payBy
+            ? `by ${esc(fmt(res.payBy, { day: "numeric", month: "long" }))}`
+            : "as soon as you can";
+          const close = `<div style="margin-top:20px"><button class="btn" type="button" data-close>Close</button></div>`;
+          $("#reg-done").innerHTML = wait
+            ? `<div class="success"><h3>You're on the waitlist.</h3><p>We'll email <b>${esc(data.email)}</b> if a spot opens up for ${esc(current.title)}. No payment needed yet.</p><p>Reference <span class="ref">${esc(res.ref)}</span></p></div>${close}`
+            : `<div class="success"><h3>Spot saved. One more step.</h3>
+          <p>Pay <b>€${esc(res.amount)}</b> ${by} via MobilePay Box <span class="ref">${esc(SKILLSPILL.mobilePayBox)}</span></p>
+          <p>Add your reference to the payment message: <span class="ref">${esc(res.ref)}</span></p>
+          <p class="muted" style="font-size:.92rem">Need to cancel? Email ${esc(SKILLSPILL.contactEmail)} more than 48 hours before for a full refund.</p>
+          <p class="muted" style="font-size:.92rem">Paying in advance secures your spot and helps the workshop reach its minimum of ${MIN_PARTICIPANTS}. No MobilePay? Reply to your confirmation email and we'll arrange something else.</p>
+          ${res.demo ? '<p class="mono muted">preview mode: nothing was saved or emailed</p>' : `<p class="muted" style="font-size:.92rem">Details are on their way to ${esc(data.email)}.</p>`}
+        </div>${close}`;
+          $("#reg-form-wrap").hidden = true;
+          $("#reg-done").hidden = false;
+          if (!wait && !res.demo && hasCap(current)) {
+            current.spotsLeft = Math.max(
+              0,
+              current.spotsLeft - Number(data.seats || 1),
+            );
+            renderCards();
+          }
+        } catch (ex) {
+          btn.disabled = false;
+          status.className = "form-status err";
+          status.textContent =
+            "That didn't go through. Check your connection and try again.";
+        }
+      });
+
+      loadWorkshops();
+    </script>
+  </body>
+</html>
