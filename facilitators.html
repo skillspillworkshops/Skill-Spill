@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Facilitator Guide · Skill Spill</title>
+<meta name="description" content="How to teach a workshop with Skill Spill in Helsinki: how we work together, revenue share, materials, invoicing, timeline and cancellations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Pixelify+Sans:wght@500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<style>
+/* Layout concept: a quiet early-web index page. Ink on paper, one green thread, a pixel wordmark as the single loud moment. */
+:root{
+  --paper:#f6f6f2; --paper-2:#ecece6; --ink:#121310; --muted:#686a62; --rule:#c9cac2; --accent:#16794a; --accent-ink:#ffffff; --warn:#a3361f;
+  --font-mark:"Pixelify Sans","Courier New",monospace;
+  --font-body:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --s-mono:.8125rem; --s-0:1rem; --s-1:1.25rem; --s-2:1.75rem; --s-3:clamp(2rem,4.5vw,2.75rem); --s-mark:clamp(3.4rem,13vw,8.5rem);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#121310;--paper-2:#1b1c18;--ink:#ecece6;--muted:#9a9c92;--rule:#34362f;--accent:#4cc98a;--accent-ink:#0d1a12;--warn:#f08a6e;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#121310;--paper-2:#1b1c18;--ink:#ecece6;--muted:#9a9c92;--rule:#34362f;--accent:#4cc98a;--accent-ink:#0d1a12;--warn:#f08a6e;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:var(--s-0);line-height:1.6;margin:0;-webkit-font-smoothing:antialiased}
+a{color:var(--ink);text-decoration-color:var(--accent);text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{margin:0;font-weight:500;line-height:1.1;text-wrap:balance;letter-spacing:-.015em}
+h2{font-size:var(--s-3)}
+h3{font-size:var(--s-1)}
+p{margin:0}
+.wrap{max-width:1080px;margin-inline:auto;padding-inline:16px}
+@media (min-width:720px){.wrap{padding-inline:32px}}
+.mono{font-family:var(--font-mono);font-size:var(--s-mono);letter-spacing:.02em}
+.muted{color:var(--muted)}
+.measure{max-width:60ch}
+.visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--ink)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:8px 24px;min-height:52px;flex-wrap:wrap;padding-block:6px}
+.top .logo{font-family:var(--font-mark);font-size:1.3rem;text-decoration:none;color:var(--ink);line-height:1}
+.top nav{display:flex;gap:4px 20px;flex-wrap:wrap}
+.top nav a{font-family:var(--font-mono);font-size:var(--s-mono);text-decoration:none;color:var(--ink)}
+.top nav a:hover{color:var(--accent);text-decoration:underline}
+
+/* ---------- hero ---------- */
+.hero{padding-block:72px 64px;border-bottom:1px solid var(--rule)}
+.hero-grid{display:grid;gap:48px;align-items:center}
+@media (min-width:900px){.hero-grid{grid-template-columns:1.4fr 1fr}}
+.mark{font-family:var(--font-mark);font-weight:500;font-size:var(--s-mark);line-height:.9;letter-spacing:-.02em;margin-top:18px}
+.mark .cur{display:inline-block;width:.42em;height:.78em;background:var(--accent);vertical-align:-.04em;margin-left:.06em;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.lead{font-size:var(--s-1);max-width:30ch;margin-top:28px;line-height:1.45}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.next{border:1px solid var(--ink)}
+.next-h{display:flex;justify-content:space-between;padding:6px 12px;border-bottom:1px solid var(--ink);background:var(--paper-2)}
+.next ol{list-style:none;margin:0;padding:0}
+.next li{display:grid;grid-template-columns:5.2rem minmax(0,1fr) auto;gap:12px;padding:10px 12px;border-bottom:1px solid var(--rule);align-items:baseline;line-height:1.35}
+.next li>.mono:first-child{white-space:nowrap}
+.next .sub{display:block;font-size:.75rem;margin-top:3px}
+.next .pr{font-variant-numeric:tabular-nums;font-size:.9rem;white-space:nowrap}
+.next li:last-child{border-bottom:0}
+.next li a{text-decoration:none;font-weight:500}
+.next li a:hover{text-decoration:underline}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.875rem;padding:10px 16px;background:var(--paper);color:var(--ink);border:1px solid var(--ink);cursor:pointer;text-decoration:none;line-height:1.1;transition:background .12s,color .12s}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.go{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.go:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn[disabled]{opacity:.5;cursor:wait}
+
+/* ---------- sections ---------- */
+section{padding-block:72px;border-bottom:1px solid var(--rule)}
+.sec-head{display:grid;gap:12px;margin-bottom:40px}
+@media (min-width:860px){.sec-head{grid-template-columns:1fr 1fr;align-items:end}}
+.label{font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted);margin-bottom:10px}
+.label::before{content:"/";color:var(--accent);margin-right:2px}
+
+/* ---------- workshops list ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:20px}
+.chip{font-family:var(--font-mono);font-size:var(--s-mono);background:none;border:0;padding:2px 0;color:var(--muted);cursor:pointer}
+.chip:hover{color:var(--ink)}
+.chip[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:4px}
+.demo-note{font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted);border-left:2px solid var(--accent);padding:4px 12px;margin-bottom:24px}
+.list{border-top:1px solid var(--ink)}
+.ws{display:grid;grid-template-columns:7rem minmax(0,1fr) 13rem;gap:16px 32px;padding-block:28px;border-bottom:1px solid var(--rule)}
+@media (max-width:760px){.ws{grid-template-columns:1fr}}
+.ws-date{display:grid;align-content:start;gap:2px}
+.ws-date .d{font-family:var(--font-mono);font-weight:500;font-size:2.3rem;line-height:1;letter-spacing:-.04em}
+.ws-main{display:grid;gap:8px;align-content:start;min-width:0}
+.ws-main h3{font-size:1.45rem}
+.ws-desc{color:var(--ink);max-width:58ch}
+.ws-meta{display:flex;flex-wrap:wrap;gap:2px 16px}
+details.more summary{cursor:pointer;font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted);width:max-content}
+details.more summary:hover{color:var(--ink)}
+details.more dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:10px 0 0;font-size:.95rem}
+details.more dt{font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted);padding-top:2px}
+details.more dd{margin:0}
+.ws-side{display:grid;gap:12px;align-content:start;justify-items:start}
+@media (min-width:761px){.ws-side{justify-items:end;text-align:right}}
+.price{font-size:1.5rem;font-weight:500;font-variant-numeric:tabular-nums;line-height:1}
+.spots{display:grid;gap:5px}
+@media (min-width:761px){.spots{justify-items:end}}
+.xs{display:flex;flex-wrap:wrap;gap:3px;max-width:13rem}
+.xs i{width:9px;height:9px;border:1px solid var(--rule)}
+.xs i.on{background:var(--ink);border-color:var(--ink)}
+.spots-label{font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted)}
+.spots-label.full{color:var(--warn)}
+.empty{padding:32px 0;color:var(--muted)}
+
+/* ---------- steps ---------- */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:0;list-style:none;padding:0;margin:0;border-top:1px solid var(--ink);counter-reset:s}
+.steps li{padding:20px 20px 4px 0;display:grid;gap:8px;align-content:start}
+.steps li::before{counter-increment:s;content:"0" counter(s);font-family:var(--font-mono);font-size:var(--s-mono);color:var(--accent)}
+.steps p{color:var(--muted);font-size:.95rem}
+
+/* ---------- facilitate ---------- */
+.cols{display:grid;gap:40px}
+@media (min-width:760px){.cols{grid-template-columns:1fr 1fr}}
+.plain{list-style:none;padding:0;margin:14px 0 0;border-top:1px solid var(--ink)}
+.plain li{padding:10px 0 10px 24px;border-bottom:1px solid var(--rule);position:relative}
+.plain li::before{content:"+";position:absolute;left:2px;font-family:var(--font-mono);color:var(--accent)}
+.plain.you li::before{content:"→"}
+.models{display:grid;gap:0;margin-top:56px;border:1px solid var(--ink)}
+@media (min-width:760px){.models{grid-template-columns:1fr 1fr}.models>div+div{border-left:1px solid var(--ink)}}
+@media (max-width:759px){.models>div+div{border-top:1px solid var(--ink)}}
+.models>div{padding:24px;display:grid;gap:10px;align-content:start}
+.figure{font-family:var(--font-mark);font-size:2.8rem;line-height:1}
+.models p{color:var(--muted)}
+.models p.figure{color:var(--ink)}
+.tl{margin:56px 0 0;display:grid;grid-template-columns:minmax(0,11rem) minmax(0,1fr);border-top:1px solid var(--ink)}
+.tl dt,.tl dd{padding:10px 0;border-bottom:1px solid var(--rule);margin:0}
+.tl dt{font-family:var(--font-mono);font-size:var(--s-mono);padding-top:12px;padding-right:16px}
+@media (max-width:480px){.tl{grid-template-columns:1fr}.tl dt{border-bottom:0;padding-bottom:0}}
+
+/* ---------- panels + forms ---------- */
+.panel{border:1px solid var(--ink);background:var(--paper);min-width:0}
+.panel-h{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 12px;border-bottom:1px solid var(--ink);background:var(--paper-2);font-family:var(--font-mono);font-size:var(--s-mono)}
+.panel-h .dots{letter-spacing:4px;color:var(--muted)}
+.panel-b{padding:24px}
+@media (max-width:480px){.panel-b{padding:18px}}
+.form{display:grid;gap:18px}
+.form .two{display:grid;gap:18px}
+@media (min-width:640px){.form .two{grid-template-columns:1fr 1fr;align-items:start}}
+.field{display:grid;gap:6px;min-width:0}
+.field label,.field legend{font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted)}
+.hint{font-size:.85rem;color:var(--muted)}
+input[type=text],input[type=email],input[type=tel],select,textarea{font:inherit;font-size:1rem;width:100%;padding:9px 0;background:transparent;color:var(--ink);border:0;border-bottom:1px solid var(--ink);border-radius:0}
+select{padding-right:4px}
+select option{background:var(--paper);color:var(--ink)}
+input:focus,select:focus{outline:none;border-bottom:2px solid var(--accent);padding-bottom:8px}
+textarea{min-height:88px;resize:vertical;border:1px solid var(--rule);padding:9px}
+textarea:focus{border-color:var(--accent);outline:1px solid var(--accent)}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+.checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:4px}
+.checks label{font-family:var(--font-body);font-size:.95rem;color:var(--ink);display:flex;gap:8px;align-items:center}
+input[type=checkbox],input[type=radio]{accent-color:var(--accent);width:16px;height:16px;margin:0}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form-status{font-family:var(--font-mono);font-size:var(--s-mono);min-height:1.3em}
+.form-status.err{color:var(--warn)}
+.success{border-left:2px solid var(--accent);padding:4px 0 4px 16px;display:grid;gap:10px}
+.form-wrap{margin-top:56px}
+.form-group{color:var(--accent);border-bottom:1px solid var(--ink);padding-bottom:6px;margin-top:10px}
+input[type=file]{font:inherit;font-size:.9rem;color:var(--muted);max-width:100%}
+
+/* ---------- venues ---------- */
+.perks{list-style:none;padding:0;margin:20px 0 0;border-top:1px solid var(--ink)}
+.perks li{padding:10px 0;border-bottom:1px solid var(--rule)}
+
+/* ---------- about ---------- */
+.mission{font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.2;max-width:26ch;letter-spacing:-.02em;font-weight:400}
+.mission em{font-style:normal;color:var(--accent)}
+.hub{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));border-top:1px solid var(--ink);margin-top:20px}
+.hub>div{padding:20px 20px 20px 0;display:grid;gap:8px;align-content:start}
+.hub p{color:var(--muted);font-size:.95rem}
+.tiers{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:14px}
+.tiers span{font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted)}
+.tiers b{font-family:var(--font-body);font-size:1rem;font-weight:500;margin-right:6px;color:var(--ink)}
+
+/* ---------- faq ---------- */
+.faq{border-top:1px solid var(--ink);max-width:780px}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{cursor:pointer;padding:16px 0;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--font-mono);color:var(--accent);flex:none}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 0 18px;color:var(--muted);max-width:62ch}
+
+/* ---------- footer ---------- */
+footer{padding-block:48px 28px}
+footer .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:28px 48px;align-items:flex-start}
+footer .fmark{font-family:var(--font-mark);font-size:2rem;line-height:1}
+footer .links{display:grid;gap:6px}
+.statusbar{margin-top:48px;border-top:1px solid var(--ink);padding-top:10px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;color:var(--muted)}
+
+/* ---------- dialog ---------- */
+dialog{border:0;padding:0;background:transparent;color:var(--ink);max-width:min(540px,calc(100vw - 24px));width:100%;max-height:calc(100dvh - 24px)}
+dialog::backdrop{background:rgba(18,19,16,.5)}
+dialog .panel{box-shadow:6px 6px 0 var(--ink);max-height:calc(100dvh - 24px);display:flex;flex-direction:column}
+dialog .panel-b{overflow:auto}
+.x{background:none;border:0;font-family:var(--font-mono);font-size:1rem;cursor:pointer;color:var(--ink);padding:0 2px;line-height:1}
+.x:hover{color:var(--accent)}
+.dlg-sum{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:12px 0;display:grid;gap:2px;font-size:.95rem}
+.dlg-sum b{font-weight:500;font-size:1.15rem}
+.policy-box{border:1px solid var(--ink);background:var(--paper-2);padding:12px 14px;font-size:.9rem;display:grid;gap:8px;line-height:1.45}
+.policy-box ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.ref{font-family:var(--font-mono);font-size:1rem;border:1px solid var(--ink);padding:2px 8px;user-select:all}
+
+.toc{list-style:none;margin:0;padding:0;counter-reset:t}
+.toc li{padding:9px 12px;border-bottom:1px solid var(--rule);display:flex;gap:12px}
+.toc li:last-child{border-bottom:0}
+.toc li::before{counter-increment:t;content:"0" counter(t);font-family:var(--font-mono);font-size:var(--s-mono);color:var(--accent);padding-top:2px}
+.toc a{text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.calc{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.calc td{padding:7px 0;border-bottom:1px solid var(--rule)}
+.calc td:last-child{text-align:right;font-family:var(--font-mono)}
+.calc tr.hl td{font-weight:700;color:var(--accent);border-bottom:1px solid var(--ink)}
+.checklist li::before{content:"☐"}
+section{scroll-margin-top:60px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Skill Spill</a>
+    <nav aria-label="Main">
+      <a href="index.html#workshops">workshops</a>
+      <a href="index.html#about">about</a>
+      <a href="index.html#share">share a skill</a>
+      <a href="index.html#venues">venues</a>
+      <a href="index.html#faq">faq</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero" style="padding-block:64px 48px">
+    <div class="wrap hero-grid" style="align-items:end">
+      <div>
+        <p class="label">facilitators</p>
+        <h1 style="font-size:var(--s-3);margin-top:6px">Facilitator guide</h1>
+        <p class="lead" style="max-width:40ch">Everything you need to know about teaching a workshop with Skill Spill: how we work together, pay, materials, and what happens when.</p>
+        <div class="actions">
+          <a class="btn go" href="index.html#propose">Propose a workshop →</a>
+        </div>
+      </div>
+      <nav class="next" aria-label="Contents">
+        <div class="next-h mono"><span>contents</span><span class="muted">guide.txt</span></div>
+        <ol class="toc">
+          <li><a href="#together">How we work together</a></li>
+          <li><a href="#planning">Planning your workshop</a></li>
+          <li><a href="#timeline">Timeline</a></li>
+          <li><a href="#pay">Pay and materials</a></li>
+          <li><a href="#invoicing">Invoicing</a></li>
+          <li><a href="#participants">Participants and cancellations</a></li>
+          <li><a href="#day">On the day</a></li>
+          <li><a href="#promotion">Promotion</a></li>
+          <li><a href="#questions">Questions</a></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <section id="together">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="label">how we work together</p><h2>You teach, we handle the rest</h2></div>
+        <p class="muted measure">Skill Spill exists to make creative learning accessible, welcoming and community-driven. We take care of the logistics so you can focus on sharing what you know.</p>
+      </div>
+      <div class="cols">
+        <div>
+          <h3>Skill Spill takes care of</h3>
+          <ul class="plain">
+            <li><b>Before:</b> finding the venue and date, the workshop listing, registrations, payments, promotion, and all participant emails and reminders</li>
+            <li><b>On the day:</b> welcoming participants, hosting, supporting you if needed, and photos</li>
+            <li><b>After:</b> follow-ups, feedback, sharing photos, and your payment summary</li>
+          </ul>
+        </div>
+        <div>
+          <h3>We ask from you</h3>
+          <ul class="plain you">
+            <li>Designing and leading your workshop</li>
+            <li>A materials list with an estimated cost per person</li>
+            <li>Sourcing materials, if agreed (costs are reimbursed)</li>
+            <li>Telling us about space or equipment needs in advance</li>
+            <li>Arriving 30 minutes early to set up</li>
+            <li>A welcoming, inclusive room</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="planning">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="label">planning</p><h2>Planning your workshop</h2></div>
+        <p class="muted measure">Before we announce anything, we agree on the details together, based on your proposal.</p>
+      </div>
+      <dl class="tl" style="margin-top:0">
+        <dt>Length</dt><dd>We usually recommend 2–3 hours, often a weekday evening (18:00–20:00) or a weekend afternoon.</dd>
+        <dt>Group size</dt><dd>A minimum of 5 paid participants for the workshop to go ahead, and a maximum that suits you and the venue.</dd>
+        <dt>Ticket price</dt><dd>Usually a student and an employed price, set so it covers your time and the materials.</dd>
+        <dt>Materials</dt><dd>What's needed, who provides it, and the cost per person.</dd>
+        <dt>Accessibility</dt><dd>Who it's for, any minimum age, experience needed, and venue access.</dd>
+        <dt>Date and venue</dt><dd>We find a partner venue and a date that suits you, ideally 2–3 months ahead.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="label">timeline</p><h2>From proposal to payment</h2></div>
+        <p class="muted measure">A typical workshop, counted back from the workshop day.</p>
+      </div>
+      <dl class="tl" style="margin-top:0">
+        <dt>Proposal</dt><dd>You send your idea through the <a href="index.html#propose">proposal form</a> and get this guide by email. We reply within a week.</dd>
+        <dt>6–8 weeks before</dt><dd>We plan the details together.</dd>
+        <dt>4–6 weeks before</dt><dd>Date and venue confirmed.</dd>
+        <dt>4 weeks before</dt><dd>The workshop goes live on our website and promotion begins.</dd>
+        <dt>2 weeks before</dt><dd>We review sign-ups together against the minimum.</dd>
+        <dt>1 week before</dt><dd>Final logistics confirmed with you and the venue.</dd>
+        <dt>2 days before</dt><dd>Participants get a reminder with the address and what to bring.</dd>
+        <dt>Workshop day</dt><dd>You teach, we host.</dd>
+        <dt>Within a week after</dt><dd>You get your payment summary, send your invoice, and we pay within 7–14 days.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="pay">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="label">pay and materials</p><h2>Fair pay, shared success</h2></div>
+        <p class="muted measure">We use a revenue share, so both of us benefit from a full room.</p>
+      </div>
+      <div class="models">
+        <div>
+          <p class="mono muted">revenue share</p>
+          <p class="figure">70 / 30</p>
+          <p>Skill Spill collects all ticket payments. Agreed material costs are reimbursed first. The rest is shared: 70% to you, 30% to Skill Spill for venue coordination, admin, promotion and hosting.</p>
+        </div>
+        <div>
+          <p class="mono muted">example</p>
+          <table class="calc">
+            <tr><td>8 participants × €30</td><td>€240</td></tr>
+            <tr><td>Materials reimbursed to you</td><td>− €40</td></tr>
+            <tr><td>To share</td><td>€200</td></tr>
+            <tr class="hl"><td>Your share (70%) + materials</td><td>€180</td></tr>
+            <tr><td>Skill Spill (30%)</td><td>€60</td></tr>
+          </table>
+        </div>
+      </div>
+      <h3 style="margin-top:48px">Materials</h3>
+      <p class="muted measure" style="margin-top:8px">We agree on materials before registration opens. Depending on the workshop, participants bring their own, Skill Spill buys them, or you buy them and are reimbursed. Please keep your receipts.</p>
+    </div>
+  </section>
+
+  <section id="invoicing">
+    <div class="wrap cols" style="align-items:start">
+      <div>
+        <p class="label">invoicing</p>
+        <h2>After the workshop</h2>
+        <p class="muted measure" style="margin-top:16px">Within a week, we send you a payment summary: the number of paid participants, total ticket income, material reimbursement, and your share. You invoice us based on it.</p>
+        <p class="muted measure" style="margin-top:12px">Send your invoice within 7 days to <span style="user-select:all;color:var(--ink)">skillspillworkshops@gmail.com</span>. We pay within 7–14 days of receiving a complete invoice.</p>
+      </div>
+      <div>
+        <h3>Your invoice should include</h3>
+        <ul class="plain">
+          <li>Your full name or business name, and contact details</li>
+          <li>Invoice number and date</li>
+          <li>Workshop name and date</li>
+          <li>Your share and any agreed material costs, itemised</li>
+          <li>Bank details (IBAN and BIC)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="participants">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="label">participants</p><h2>Participants and cancellations</h2></div>
+        <p class="muted measure">This is what participants agree to when they register, so you know how it works on their side.</p>
+      </div>
+      <dl class="tl" style="margin-top:0">
+        <dt>Prices</dt><dd>Most workshops have a student and an employed price. Students give their student number when registering.</dd>
+        <dt>Payment</dt><dd>Participants pay in advance via MobilePay with a booking reference. Their spot is confirmed once we receive payment.</dd>
+        <dt>Minimum</dt><dd>Each workshop needs at least 5 paid participants. If we don't reach it, we decide together whether to reschedule, cancel or go ahead, and participants get a full refund or move to another date.</dd>
+        <dt>Cancellations</dt><dd>More than 48 hours before: full refund or transfer. Less than 48 hours before: no refund, but they can transfer their place. No-shows without notice: no refund.</dd>
+        <dt>If we cancel</dt><dd>If Skill Spill has to cancel for reasons outside your control, we tell you as early as possible.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="day">
+    <div class="wrap cols" style="align-items:start">
+      <div>
+        <p class="label">on the day</p>
+        <h2>Workshop day checklist</h2>
+        <p class="muted measure" style="margin-top:16px">A few things that help the evening run smoothly. We're there to host, so you're never on your own.</p>
+      </div>
+      <ul class="plain checklist">
+        <li>Arrive 30 minutes early to set up with us</li>
+        <li>Materials ready for the number of participants, plus a few spares</li>
+        <li>A finished example or two to show what we'll make</li>
+        <li>A short intro, then hands-on time as soon as possible</li>
+        <li>Time at the end to look at everyone's work and tidy up together</li>
+        <li>Mention where people can follow your work</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="promotion">
+    <div class="wrap cols" style="align-items:start">
+      <div>
+        <p class="label">promotion</p>
+        <h2>Spreading the word</h2>
+        <p class="muted measure" style="margin-top:16px">We promote your workshop on our website, Instagram, Telegram and newsletter. You're encouraged, but never required, to share it with your own community too. Workshops fill best when we both spread the word.</p>
+      </div>
+      <div>
+        <h3>What we need from you</h3>
+        <ul class="plain">
+          <li>A short bio (2–4 sentences)</li>
+          <li>A headshot</li>
+          <li>2–3 photos of your work or a previous workshop</li>
+          <li>A short description we can use for promotion</li>
+        </ul>
+        <p class="muted" style="margin-top:12px;font-size:.95rem">You can upload photos with your proposal, or send them later by email.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <div class="wrap">
+      <div class="sec-head"><div><p class="label">questions</p><h2>Facilitator questions</h2></div></div>
+      <div class="faq">
+        <details><summary>Do I need teaching experience?</summary><p>No. Many of our facilitators are teaching for the first time. We help you shape the format and we host on the day.</p></details>
+        <details><summary>What if not enough people sign up?</summary><p>We review sign-ups with you two weeks before. If we're under the minimum of 5 paid participants, we decide together whether to reschedule, cancel or go ahead.</p></details>
+        <details><summary>Can I run my workshop more than once?</summary><p>Yes. Workshops that work well often come back, sometimes as a regular series.</p></details>
+        <details><summary>Who takes photos, and can I use them?</summary><p>We take photos for documentation and promotion and share them with you afterwards, so you can use them too.</p></details>
+        <details><summary>I have a question that isn't here.</summary><p>Email <span style="user-select:all;color:var(--ink)">skillspillworkshops@gmail.com</span> or message us on <a href="https://www.instagram.com/skillspill.workshops/" target="_blank" rel="noopener">Instagram</a>.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="values" style="border-bottom:0">
+    <div class="wrap">
+      <p class="label">our values</p>
+      <p class="mission">Welcoming, inclusive, hands-on, and <em>curiosity over perfection</em>.</p>
+      <p class="muted measure" style="margin-top:20px">We want everyone to feel comfortable learning something new. If you have ideas for future workshops or ways we can improve, we'd love to hear them.</p>
+      <div class="actions"><a class="btn go" href="index.html#propose">Propose a workshop →</a><a class="btn" href="index.html">Back to Skill Spill</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <div><p class="fmark">Skill Spill</p><p class="muted" style="margin-top:10px;max-width:34ch">Practical skills, shared around the table.</p></div>
+      <div class="links">
+        <a href="https://t.me/+VEVrRvJ6kuRhN2Fh" target="_blank" rel="noopener">Telegram ↗</a>
+        <a href="https://www.instagram.com/skillspill.workshops/" target="_blank" rel="noopener">Instagram ↗</a>
+        <span class="muted" style="user-select:all">skillspillworkshops@gmail.com</span>
+      </div>
+    </div>
+    <div class="statusbar mono"><span>© 2026 Skill Spill</span><span>building a community one workshop at a time</span></div>
+  </div>
+</footer>
+
+</body>
+</html>
