@@ -6,11 +6,42 @@
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <title>Skill Spill</title>
+    <title>Skill Spill · Creative skill-sharing workshops in Helsinki</title>
     <meta
       name="description"
-      content="Skill Spill: artist-led craft and making workshops at partner venues. Register for a workshop, propose one, or host one."
+      content="Skill Spill is a creative community in Helsinki running small, hands-on workshops: embroidery, clothing repair, natural dyeing, bookbinding, digital declutter and more. Beginner-friendly, led by local makers."
     />
+    <meta
+      name="keywords"
+      content="Helsinki workshops, craft workshop Helsinki, creative community Helsinki, embroidery workshop, clothing repair, skill sharing, käsityö työpaja Helsinki"
+    />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Skill Spill · Creative skill-sharing workshops in Helsinki"
+    />
+    <meta
+      property="og:description"
+      content="Small, hands-on workshops led by local makers. Come to learn a skill, stay for the people around the table."
+    />
+    <meta property="og:locale" content="en_GB" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#f6f6f2" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Skill Spill",
+        "description": "Community-led creative skill-sharing workshops in Helsinki.",
+        "email": "skillspillworkshops@gmail.com",
+        "areaServed": { "@type": "City", "name": "Helsinki" },
+        "sameAs": [
+          "https://www.instagram.com/skillspill.workshops/",
+          "https://t.me/+VEVrRvJ6kuRhN2Fh"
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -141,6 +172,14 @@
       .measure {
         max-width: 60ch;
       }
+      .visually-hidden {
+        position: absolute !important;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
 
       /* ---------- top bar ---------- */
       .top {
@@ -245,15 +284,6 @@
         list-style: none;
         margin: 0;
         padding: 0;
-      }
-      .next li a::after {
-        content: " →";
-        color: var(--accent);
-        opacity: 0;
-        transition: opacity 0.12s;
-      }
-      .next li a:hover::after {
-        opacity: 1;
       }
       .next li {
         display: grid;
@@ -677,6 +707,7 @@
       @media (min-width: 640px) {
         .form .two {
           grid-template-columns: 1fr 1fr;
+          align-items: start;
         }
       }
       .field {
@@ -1000,7 +1031,10 @@
           <div>
             <p class="mono muted">skill sharing · Helsinki</p>
             <h1 class="mark">
-              Skill<br />Spill<span class="cur" aria-hidden="true"></span>
+              Skill<br />Spill<span class="cur" aria-hidden="true"></span
+              ><span class="visually-hidden">
+                – creative skill-sharing workshops in Helsinki</span
+              >
             </h1>
             <p class="lead">
               Small, hands-on workshops led by local makers. Come to learn a
@@ -1095,10 +1129,11 @@
           </p>
           <div class="cols" style="margin-top: 32px; align-items: start">
             <p class="measure">
-              Skill Spill is a relaxed, peer-to-peer space for practical skills,
-              creative hobbies and open knowledge-sharing. Local artists and
-              makers lead the sessions, but the room learns from each other: how
-              someone else threads a needle, sorts their files or fixes a hem.
+              Skill Spill is a relaxed, peer-to-peer creative community in
+              Helsinki: a space for practical skills, creative hobbies and open
+              knowledge-sharing. Local artists and makers lead the sessions, but
+              the room learns from each other: how someone else threads a
+              needle, sorts their files or fixes a hem.
             </p>
             <p class="measure muted">
               We keep groups small and the atmosphere easy, so you can ask the
@@ -1235,15 +1270,28 @@
 
           <div class="panel form-wrap" id="propose">
             <div class="panel-h">
-              <span>share_a_skill</span
+              <span>propose_a_workshop</span
               ><span class="dots" aria-hidden="true">□×</span>
             </div>
             <div class="panel-b">
-              <h3 style="font-size: var(--s-2)">Propose a workshop</h3>
-              <p class="muted" style="margin: 6px 0 24px">
-                A rough idea is enough. We'll get back to you within a week to
-                shape it together.
-              </p>
+              <div
+                class="cols"
+                style="gap: 28px; align-items: end; margin-bottom: 28px"
+              >
+                <div>
+                  <h3 style="font-size: var(--s-2)">Propose a workshop</h3>
+                  <p class="muted" style="margin-top: 8px">
+                    About 15 minutes. It covers everything we need to plan
+                    together, so there's no back-and-forth. You'll get our
+                    facilitator guide by email straight away, and we reply
+                    within a week.
+                  </p>
+                </div>
+                <p class="muted" style="font-size: 0.95rem">
+                  We like 2–3 months of lead time so there's enough room for
+                  promotion. Not sure about some answers? A rough idea is fine.
+                </p>
+              </div>
               <form class="form" data-type="facilitator" novalidate>
                 <div class="hp" aria-hidden="true">
                   <label
@@ -1255,6 +1303,8 @@
                       autocomplete="off"
                   /></label>
                 </div>
+
+                <p class="form-group mono">01 · about you</p>
                 <div class="two">
                   <div class="field">
                     <label for="f-name">Name *</label
@@ -1279,35 +1329,202 @@
                 </div>
                 <div class="two">
                   <div class="field">
-                    <label for="f-title">What would you teach? *</label
+                    <label for="f-phone">Phone</label
                     ><input
-                      id="f-title"
-                      name="title"
-                      type="text"
-                      required
-                      placeholder="e.g. Sashiko mending"
+                      id="f-phone"
+                      name="phone"
+                      type="tel"
+                      autocomplete="tel"
                     />
                   </div>
                   <div class="field">
-                    <label for="f-link">Website or Instagram</label
+                    <label for="f-link">Website, portfolio or Instagram</label
                     ><input
                       id="f-link"
                       name="link"
                       type="text"
-                      placeholder="@handle"
+                      placeholder="@handle or https://"
                     />
                   </div>
                 </div>
                 <div class="field">
-                  <label for="f-desc">Tell us a bit about it *</label
+                  <label for="f-bio">A bit about you *</label
                   ><textarea
-                    id="f-desc"
-                    name="description"
+                    id="f-bio"
+                    name="bio"
                     required
-                    placeholder="What people would learn or make, and anything you'd need"
+                    placeholder="A short bio: your artistic background and why you want to share what you do. We use it on the workshop listing."
                   ></textarea>
                 </div>
-                <div><button class="btn go" type="submit">Send →</button></div>
+                <div class="field">
+                  <label for="f-exp"
+                    >Have you taught or led workshops before?</label
+                  ><textarea
+                    id="f-exp"
+                    name="experience"
+                    style="min-height: 64px"
+                    placeholder="First time is completely fine"
+                  ></textarea>
+                </div>
+
+                <p class="form-group mono">02 · your workshop</p>
+                <div class="field">
+                  <label for="f-title">Workshop title *</label
+                  ><input
+                    id="f-title"
+                    name="title"
+                    type="text"
+                    required
+                    placeholder="e.g. Sashiko mending for beginners"
+                  />
+                </div>
+                <div class="field">
+                  <label for="f-format"
+                    >What will you do, and how do you see the format? *</label
+                  ><textarea id="f-format" name="format" required></textarea>
+                </div>
+                <div class="field">
+                  <label for="f-promo">Short description for promotion</label
+                  ><textarea
+                    id="f-promo"
+                    name="promo"
+                    placeholder="2–4 sentences we can use on the website and social media"
+                  ></textarea>
+                </div>
+                <div class="two">
+                  <div class="field">
+                    <label for="f-focus">Main focus</label>
+                    <select id="f-focus" name="focus">
+                      <option>Learning and developing a skill</option>
+                      <option>Completing a project to take home</option>
+                      <option>A mix of both</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="f-level">Skill level</label>
+                    <select id="f-level" name="level">
+                      <option>Beginner</option>
+                      <option>All levels</option>
+                      <option>Some experience needed</option>
+                      <option>Advanced</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="f-aud"
+                    >Audience, minimum age, accessibility or experience
+                    needed</label
+                  ><input id="f-aud" name="audience" type="text" />
+                </div>
+
+                <p class="form-group mono">03 · practical details</p>
+                <div class="two">
+                  <div class="field">
+                    <label for="f-len">Ideal length</label
+                    ><input
+                      id="f-len"
+                      name="length"
+                      type="text"
+                      placeholder="We usually recommend 2–3 hours"
+                    />
+                  </div>
+                  <div class="two" style="gap: 12px">
+                    <div class="field">
+                      <label for="f-min">Min. people</label
+                      ><input
+                        id="f-min"
+                        name="min_participants"
+                        type="text"
+                        inputmode="numeric"
+                        placeholder="5"
+                      />
+                    </div>
+                    <div class="field">
+                      <label for="f-max">Max. people</label
+                      ><input
+                        id="f-max"
+                        name="max_participants"
+                        type="text"
+                        inputmode="numeric"
+                        placeholder="12"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="two">
+                  <div class="field">
+                    <label for="f-price"
+                      >Fair ticket price, incl. materials</label
+                    ><input
+                      id="f-price"
+                      name="price"
+                      type="text"
+                      placeholder="e.g. €25 student / €35 employed"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="f-fee">Your expected fee or rate, if any</label
+                    ><input id="f-fee" name="fee" type="text" /><span
+                      class="hint"
+                      >We usually work with a revenue share: you receive 70% of
+                      ticket income after materials.</span
+                    >
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="f-dates">Preferred days, times or dates</label
+                  ><input
+                    id="f-dates"
+                    name="dates"
+                    type="text"
+                    placeholder="e.g. weekday evenings from February"
+                  />
+                </div>
+                <div class="field">
+                  <label for="f-mat"
+                    >Materials: what's needed, who provides them, cost per
+                    person</label
+                  ><textarea
+                    id="f-mat"
+                    name="materials"
+                    style="min-height: 64px"
+                  ></textarea>
+                </div>
+                <div class="two">
+                  <div class="field">
+                    <label for="f-space">Space requirements</label
+                    ><input
+                      id="f-space"
+                      name="space"
+                      type="text"
+                      placeholder="e.g. sink, big tables, power outlets"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="f-photos"
+                      >Photos: headshot and your work (up to 5)</label
+                    ><input
+                      id="f-photos"
+                      name="photo_files"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                    /><span class="hint" id="f-photos-hint"
+                      >JPG or PNG. Resized automatically.</span
+                    >
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="f-any">Anything else we should know?</label
+                  ><textarea
+                    id="f-any"
+                    name="anything"
+                    style="min-height: 64px"
+                  ></textarea>
+                </div>
+                <div>
+                  <button class="btn go" type="submit">Send proposal →</button>
+                </div>
                 <p class="form-status" role="status" aria-live="polite"></p>
               </form>
             </div>
@@ -1322,10 +1539,27 @@
             <h2>Host a workshop at your space</h2>
             <p class="muted measure" style="margin-top: 16px">
               Cafés, studios, shops, libraries. If you have tables and a bit of
-              room, we can bring a workshop and a new crowd to you. We handle
-              bookings, payments and hosting.
+              room, we can bring a workshop and a new crowd to you.
             </p>
-            <p class="muted measure" style="margin-top: 12px">
+            <ul class="perks">
+              <li>
+                <b>The format:</b> about 2 hours, 5–15 people at tables, usually
+                weekday evenings or weekend afternoons
+              </li>
+              <li>
+                <b>We handle:</b> programming, bookings, payments, promotion
+                with your venue tagged, setup and tidy-up
+              </li>
+              <li>
+                <b>We ask for:</b> the space, tables and chairs, access 30
+                minutes early, and a contact on the day
+              </li>
+              <li>
+                <b>Terms:</b> agreed together: free for footfall, a room fee, a
+                minimum spend or a revenue share
+              </li>
+            </ul>
+            <p class="muted measure" style="margin-top: 16px">
               Current partner venues include Byroo Cafe and Zestii Kitchens.
             </p>
           </div>
@@ -1346,9 +1580,22 @@
                       autocomplete="off"
                   /></label>
                 </div>
-                <div class="field">
-                  <label for="v-venue">Venue or organisation *</label
-                  ><input id="v-venue" name="venue" type="text" required />
+                <div class="two">
+                  <div class="field">
+                    <label for="v-venue">Venue or organisation *</label
+                    ><input id="v-venue" name="venue" type="text" required />
+                  </div>
+                  <div class="field">
+                    <label for="v-type">Type of space</label>
+                    <select id="v-type" name="space_type">
+                      <option>Café / restaurant</option>
+                      <option>Studio / gallery</option>
+                      <option>Shop</option>
+                      <option>Library / cultural centre</option>
+                      <option>Community space</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="two">
                   <div class="field">
@@ -1374,22 +1621,163 @@
                 </div>
                 <div class="two">
                   <div class="field">
-                    <label for="v-addr">Address</label
-                    ><input id="v-addr" name="address" type="text" />
+                    <label for="v-phone">Phone</label
+                    ><input
+                      id="v-phone"
+                      name="phone"
+                      type="tel"
+                      autocomplete="tel"
+                    />
                   </div>
                   <div class="field">
-                    <label for="v-cap">Seats at tables</label
+                    <label for="v-link">Website or Instagram</label
+                    ><input
+                      id="v-link"
+                      name="link"
+                      type="text"
+                      placeholder="@venue"
+                    />
+                  </div>
+                </div>
+                <div class="two">
+                  <div class="field">
+                    <label for="v-addr">Address *</label
+                    ><input id="v-addr" name="address" type="text" required />
+                  </div>
+                  <div class="field">
+                    <label for="v-cap">Seats at tables *</label
                     ><input
                       id="v-cap"
                       name="capacity"
                       type="text"
+                      required
                       placeholder="e.g. 12"
                     />
                   </div>
                 </div>
+                <fieldset class="field">
+                  <legend>Facilities</legend>
+                  <div class="checks">
+                    <label
+                      ><input
+                        type="checkbox"
+                        name="facilities"
+                        value="Tables"
+                      />
+                      Tables</label
+                    >
+                    <label
+                      ><input
+                        type="checkbox"
+                        name="facilities"
+                        value="Sink / water"
+                      />
+                      Sink / water</label
+                    >
+                    <label
+                      ><input
+                        type="checkbox"
+                        name="facilities"
+                        value="Step-free access"
+                      />
+                      Step-free access</label
+                    >
+                    <label
+                      ><input
+                        type="checkbox"
+                        name="facilities"
+                        value="Accessible toilet"
+                      />
+                      Accessible toilet</label
+                    >
+                    <label
+                      ><input
+                        type="checkbox"
+                        name="facilities"
+                        value="Storage"
+                      />
+                      Storage</label
+                    >
+                    <label
+                      ><input
+                        type="checkbox"
+                        name="facilities"
+                        value="Projector / screen"
+                      />
+                      Projector / screen</label
+                    >
+                  </div>
+                </fieldset>
+                <div class="two">
+                  <div class="field">
+                    <label for="v-mess"
+                      >Messy or wet work (dyeing, paint)?</label
+                    >
+                    <select id="v-mess" name="mess">
+                      <option>Yes, with some care</option>
+                      <option>Light mess only</option>
+                      <option>No mess please</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="v-food">Food &amp; drink</label>
+                    <select id="v-food" name="food">
+                      <option>Participants can order</option>
+                      <option>We could offer a set menu or discount</option>
+                      <option>No food service</option>
+                    </select>
+                  </div>
+                </div>
+                <fieldset class="field">
+                  <legend>Days the space is usually free</legend>
+                  <div class="checks">
+                    <label
+                      ><input type="checkbox" name="days" value="Mon" />
+                      Mon</label
+                    ><label
+                      ><input type="checkbox" name="days" value="Tue" />
+                      Tue</label
+                    ><label
+                      ><input type="checkbox" name="days" value="Wed" />
+                      Wed</label
+                    ><label
+                      ><input type="checkbox" name="days" value="Thu" />
+                      Thu</label
+                    ><label
+                      ><input type="checkbox" name="days" value="Fri" />
+                      Fri</label
+                    ><label
+                      ><input type="checkbox" name="days" value="Sat" />
+                      Sat</label
+                    ><label
+                      ><input type="checkbox" name="days" value="Sun" />
+                      Sun</label
+                    >
+                  </div>
+                </fieldset>
+                <div class="two">
+                  <div class="field">
+                    <label for="v-times">Times</label>
+                    <select id="v-times" name="times">
+                      <option>Evenings</option>
+                      <option>Daytime</option>
+                      <option>Both</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="v-terms">What would work for you?</label>
+                    <select id="v-terms" name="terms">
+                      <option>Let's discuss</option>
+                      <option>Free, for the footfall and promotion</option>
+                      <option>Room fee</option>
+                      <option>Minimum spend per participant</option>
+                      <option>Revenue share</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="field">
                   <label for="v-notes"
-                    >When is the space free, and anything else?</label
+                    >Anything else? House rules, photos link, ideas</label
                   ><textarea id="v-notes" name="notes"></textarea>
                 </div>
                 <div><button class="btn go" type="submit">Send →</button></div>
@@ -1521,7 +1909,7 @@
               >Instagram ↗</a
             >
             <p id="contact-email" hidden></p>
-            <a href="#propose">Share a skill</a>
+            <a href="#propose">Propose a workshop</a>
             <a href="#venue-form">Host a workshop</a>
           </div>
         </div>
@@ -1611,6 +1999,19 @@
                   </select>
                 </div>
               </div>
+              <div class="field" id="student-field" hidden>
+                <label for="r-student">Student number *</label
+                ><input
+                  id="r-student"
+                  name="student_number"
+                  type="text"
+                  autocomplete="off"
+                  inputmode="text"
+                /><span class="hint"
+                  >Needed for the student price. Bring your student card to the
+                  workshop.</span
+                >
+              </div>
               <div class="field">
                 <label for="r-notes">Access needs, allergies or questions</label
                 ><textarea
@@ -1683,10 +2084,6 @@
       };
 
       /* Programme shown while `endpoint` is empty. Once connected, workshops come from the Google Sheet. */
-      const BYROO = {
-        venue: "Byroo Cafe",
-        address: "Laivurinrinne 1, 00120 Helsinki",
-      };
       const SAMPLE_WORKSHOPS = [
         {
           id: "EMB-1013",
@@ -1694,9 +2091,13 @@
           date: "2026-10-13",
           start: "18:00",
           end: "20:00",
-          ...BYROO,
+          venue: "Byroo Cafe",
+          address: "Laivurinrinne 1, 00120 Helsinki",
+          facilitator: "Katie Ballinger",
+          facilitator_bio:
+            "Katie Ballinger is an artist from Canada who is a jack of all trades, from visual arts to coding. She worked in Silicon Valley tech for five years as a self-taught software engineer and recently graduated from Aalto University's New Media programme.",
           description:
-            "Learn the basics to get started with embroidery: working with threads and needles, a few essential stitches, and a simple design to start using what you've learned.",
+            "During this workshop we will learn the basics to get started with embroidery. We'll learn about working with threads and needles, go through a few basic stitches, and get started on a simple design using what you've learned.",
           level: "Beginner",
           price_student: 20,
           price_employed: 30,
@@ -1708,9 +2109,13 @@
           date: "2026-10-20",
           start: "18:00",
           end: "20:00",
-          ...BYROO,
+          venue: "Byroo Cafe",
+          address: "Laivurinrinne 1, 00120 Helsinki",
+          facilitator: "Katie Ballinger",
+          facilitator_bio:
+            "Katie Ballinger is an artist from Canada who is a jack of all trades, from visual arts to coding. She worked in Silicon Valley tech for five years as a self-taught software engineer and recently graduated from Aalto University's New Media programme.",
           description:
-            "Learn different techniques for repairing clothing and textiles. Bring your ripped, torn and worn-out pieces, and we'll restore them to use and make them more beautiful in the process.",
+            "Learn about different techniques for repairing clothing and textiles. We provide some materials and tools; you bring your ripped, torn and disfigured textiles, and we restore your items to use and beautify them in the process.",
           level: "Beginner",
           price_student: 15,
           price_employed: 20,
@@ -1727,30 +2132,67 @@
           address: "Kaarlenkatu 15, 00530 Helsinki",
           facilitator: "Katie Ballinger",
           facilitator_bio:
-            "Katie is an artist from Canada and a jack of all trades, from visual arts to coding. She worked in Silicon Valley tech for five years as a self-taught software engineer and recently graduated from Aalto University's New Media programme. A big collector of data herself, she's been cleaning up her own digital mess, and noticed how little help there is for it.",
+            "Katie Ballinger is an artist from Canada who is a jack of all trades, from visual arts to coding. She worked in Silicon Valley tech for five years as a self-taught software engineer and recently graduated from Aalto University's New Media programme. As a big collector of data, she has been cleaning up her own digital mess and has recognised the lack of education or knowledge around this. All of us need help with these digital hygiene tasks, even her, so let's face this challenge together.",
           description:
-            "A relaxed, hands-on co-working session for a clearer inbox, better file organisation and smoother daily workflows. A short practical intro, then we work on our own setups side by side with light guidance and tips.",
+            "Get your digital work life under control in this relaxed, hands-on co-working session designed for anyone ready for a clearer inbox, better file organisation and smoother daily workflows. We'll kick things off with a short, practical intro on how digital clutter affects focus and productivity, along with simple ways to make your systems work for you.\n\nThen we'll get straight into it, working on our own setups side by side. Whether you're tackling your inbox, reorganising files or sorting out storage, you'll get light guidance, practical tips, and the chance to learn from how others manage their workflows.",
           level: "All levels",
           price_student: 20,
           price_employed: 25,
           pay_by: "2026-11-01",
           bring:
-            "Your work computer, any drives or files you want to tackle, and a rough idea of what's been slowing you down.",
+            "Your work computer (and any drives or files you want to tackle), and a rough idea of what's been slowing you down.",
           notes: "You're welcome to order from the menu at extra cost.",
+        },
+        {
+          id: "DARN-1110",
+          title: "Clothing Repair: Darning",
+          date: "2026-11-10",
+          start: "18:00",
+          end: "20:00",
+          venue: "Byroo Cafe",
+          address: "Laivurinrinne 1, 00120 Helsinki",
+          facilitator: "Katie Ballinger",
+          facilitator_bio:
+            "Katie Ballinger is an artist from Canada who is a jack of all trades, from visual arts to coding. She worked in Silicon Valley tech for five years as a self-taught software engineer and recently graduated from Aalto University's New Media programme.",
+          description:
+            "Learn about different techniques for repairing clothing and textiles. We provide some materials and tools; you bring your ripped, torn and disfigured textiles, and we restore your items to use and beautify them in the process.",
+          level: "Beginner",
+          price_student: 15,
+          price_employed: 20,
+          materials: "Some materials and tools provided.",
+          bring: "Your ripped, torn or worn textiles.",
+        },
+        {
+          id: "AVO-1116",
+          title: "Avocado-Dyed Hand Towels: Layer, Stitch & Create",
+          date: "2026-11-16",
+          start: "17:00",
+          end: "19:00",
+          venue: "Venue TBC",
+          facilitator: "Shweta Dash",
+          facilitator_bio:
+            "Hi, I am Shweta, a textile designer working through material play and hands-on making. My workshop approach is open-minded and experimental while acknowledging traditional artisanal textile-making methods. Through facilitating workshops across Helsinki, Espoo and Joutsa, I have learned that craft techniques continuously shape-shift through the materials at hand and the outcomes they produce.",
+          description:
+            "Create your own layered kitchen towel using gauze textiles, cotton yarn and avocado dyeing. We will begin by layering and hand-stitching pre-treated gauze textiles together using cotton yarns, creating a tactile, textured surface.\n\nThis hands-on workshop combines textile layering, hand stitching and natural dyeing to create a functional textile object. No previous textile experience is required.",
+          level: "Beginner friendly",
+          price_employed: 40,
         },
         {
           id: "BOOK-1118",
           title: "Pocket Book Making",
           date: "2026-11-18",
-          start: "",
-          end: "",
-          ...BYROO,
+          venue: "Byroo Cafe",
+          address: "Laivurinrinne 1, 00120 Helsinki",
+          facilitator: "Katie Ballinger",
+          facilitator_bio:
+            "Katie Ballinger is an artist from Canada who is a jack of all trades, from visual arts to coding. She worked in Silicon Valley tech for five years as a self-taught software engineer and recently graduated from Aalto University's New Media programme.",
           description:
-            "Make a pocket-sized book from scratch. Choose A5 or A6, dot-grid or lined pages, decorate a sturdy colourful cover, and bind it with staples. Bring your own paper or binding materials if you want to experiment.",
-          level: "Beginner",
+            "Come make your own pocket-sized book from scratch! In this hands-on workshop, we'll explore simple bookbinding techniques and create a small book with a custom, decorated cover.\n\nChoose between A5 or A6 size, and fill your book with your choice of dot-grid or lined paper. Colourful, sturdy cardstock will be provided for the covers, which we can decorate together, or you're welcome to bring your own paper if you have something special in mind.\n\nWe'll learn how to bind our books using staples, with all the necessary tools and materials provided. If you'd like to experiment with a different binding technique, you're also welcome to bring your own materials and make the book your own.",
+          level: "Beginner, no experience needed",
           price_student: 20,
           price_employed: 30,
           materials: "All tools and materials provided.",
+          bring: "Optional: your own paper or binding materials.",
         },
       ];
 
@@ -1770,6 +2212,11 @@
             })[c],
         );
       const isDemo = () => !SKILLSPILL.endpoint;
+      const paras = (t) =>
+        String(t || "")
+          .split(/\n\s*\n|\r\n\s*\r\n/)
+          .map((x) => x.trim())
+          .filter(Boolean);
       let workshops = [];
 
       $("#year").textContent = new Date().getFullYear();
@@ -1829,6 +2276,7 @@
         );
         renderCards();
         renderNext();
+        addEventData();
       }
 
       function renderNext() {
@@ -1837,7 +2285,7 @@
           ? n
               .map(
                 (w) =>
-                  `<li><span class="mono muted">${esc(fmt(w.date, { weekday: "short" }))} ${esc(fmt(w.date, { day: "numeric", month: "numeric" }))}</span><span><a href="#ws-${esc(w.id)}">${esc(w.title)}</a><span class="mono muted sub">${esc(w.venue)} · ${esc(timeOf(w))}</span></span><span class="pr muted">${isFull(w) ? '<span class="mono" style="color:var(--warn)">full</span>' : "from €" + esc(Math.min(...[w.price_student, w.price_employed].map(Number).filter((x) => x > 0)))}</span></li>`,
+                  `<li><span class="mono muted">${esc(fmt(w.date, { weekday: "short" }))} ${esc(fmt(w.date, { day: "numeric", month: "numeric" }))}</span><span><a href="#ws-${esc(w.id)}">${esc(w.title)}</a><span class="mono muted sub">${esc(w.venue)} · ${esc(timeOf(w))}</span></span><span class="pr muted">${isFull(w) ? '<span class="mono" style="color:var(--warn)">full</span>' : priceText(w)}</span></li>`,
               )
               .join("")
           : '<li><span></span><span class="muted">New workshops coming soon.</span></li>';
@@ -1871,13 +2319,20 @@
       <div class="ws-main">
         <p class="mono muted">${esc((w.level || "").toLowerCase())}${w.facilitator ? " · with " + esc(w.facilitator) : ""}</p>
         <h3>${esc(w.title)}</h3>
-        <p class="ws-desc">${esc(w.description)}</p>
-        <p class="ws-meta muted" style="font-size:.95rem"><a href="${mapUrl(w)}" target="_blank" rel="noopener" style="color:inherit">${where} ↗</a></p>
-        <details class="more"><summary>details</summary><dl>
+        <p class="ws-desc">${esc(paras(w.description)[0] || "")}</p>
+        <p class="ws-meta muted" style="font-size:.95rem">${/tbc/i.test(w.venue || "") && !w.address ? `<span>${where}</span>` : `<a href="${mapUrl(w)}" target="_blank" rel="noopener" style="color:inherit">${where} ↗</a>`}</p>
+        <details class="more"><summary>${paras(w.description).length > 1 ? "read more" : "details"}</summary>${paras(
+          w.description,
+        )
+          .slice(1)
+          .map(
+            (x) => `<p class="ws-desc" style="margin-top:10px">${esc(x)}</p>`,
+          )
+          .join("")}<dl>
           ${w.materials ? `<dt>materials</dt><dd>${esc(w.materials)}</dd>` : ""}
           ${w.bring ? `<dt>bring</dt><dd>${esc(w.bring)}</dd>` : ""}
           ${w.notes ? `<dt>food</dt><dd>${esc(w.notes)}</dd>` : ""}
-          ${w.facilitator_bio ? `<dt>facilitator</dt><dd>${esc(w.facilitator_bio)}</dd>` : ""}
+          ${w.facilitator_bio ? `<dt>${esc((w.facilitator || "facilitator").split(" ")[0].toLowerCase())}</dt><dd>${esc(w.facilitator_bio)}</dd>` : ""}
           <dt>payment</dt><dd>MobilePay Box ${esc(SKILLSPILL.mobilePayBox)}, ${w.pay_by ? "by " + esc(fmt(w.pay_by, { day: "numeric", month: "long" })) : "in advance"}</dd>
           <dt>minimum</dt><dd>${MIN_PARTICIPANTS} paid participants for the workshop to go ahead</dd>
         </dl></details>
@@ -1903,7 +2358,13 @@
               status: isFull(w) ? "waitlist" : "registered",
               ref: "SS-" + Math.random().toString(36).slice(2, 7).toUpperCase(),
               amount: (Number(price) || 0) * (Number(payload.seats) || 1),
-              payBy: w.pay_by || "",
+              payBy:
+                w.pay_by ||
+                (() => {
+                  const d = new Date(w.date + "T12:00:00");
+                  d.setDate(d.getDate() - 2);
+                  return d.toISOString().slice(0, 10);
+                })(),
               demo: true,
             };
           }
@@ -1917,6 +2378,26 @@
         return r.json();
       }
 
+      function shrinkImage(file) {
+        return new Promise((res) => {
+          const img = new Image(),
+            url = URL.createObjectURL(file);
+          img.onload = () => {
+            const k = Math.min(1, 1600 / Math.max(img.width, img.height));
+            const c = document.createElement("canvas");
+            c.width = Math.round(img.width * k);
+            c.height = Math.round(img.height * k);
+            c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+            URL.revokeObjectURL(url);
+            res({ name: file.name, data: c.toDataURL("image/jpeg", 0.82) });
+          };
+          img.onerror = () => {
+            URL.revokeObjectURL(url);
+            res({ name: file.name, data: "" });
+          };
+          img.src = url;
+        });
+      }
       function formToObject(form) {
         const o = {};
         new FormData(form).forEach((v, k) => {
@@ -1954,12 +2435,12 @@
 
       const THANKS = {
         facilitator: [
-          "Thanks, idea received.",
-          "We'll reply by email within a week to shape it together.",
+          "Proposal received.",
+          "We've emailed you our facilitator guide and what happens next. We'll get back to you within a week.",
         ],
         venue: [
-          "Thanks, venue noted.",
-          "We'll be in touch by email to talk about what could work in your space.",
+          "Thanks, details received.",
+          "We've emailed you an overview of how partnering works, and we'll be in touch within a week to arrange a visit or call.",
         ],
         newsletter: [
           "You're on the list.",
@@ -1981,10 +2462,17 @@
           status.className = "form-status";
           status.textContent = "Sending…";
           try {
-            const res = await send({
-              type: form.dataset.type,
-              ...formToObject(form),
-            });
+            const data = formToObject(form);
+            delete data.photo_files;
+            const fi = form.querySelector("input[type=file]");
+            if (fi && fi.files.length) {
+              status.textContent = "Preparing photos…";
+              data.photos = await Promise.all(
+                [...fi.files].slice(0, 5).map(shrinkImage),
+              );
+              status.textContent = "Sending…";
+            }
+            const res = await send({ type: form.dataset.type, ...data });
             if (!res.ok) throw new Error(res.error || "failed");
             const [h, p] = THANKS[form.dataset.type];
             form.outerHTML = `<div class="success" role="status"><h3>${h}</h3><p class="muted">${p}</p>${res.demo ? '<p class="mono muted">preview mode: nothing was sent</p>' : ""}</div>`;
@@ -2020,16 +2508,25 @@
         $("#reg-bar").textContent = full ? "waitlist" : "register";
         const t = regForm.ticket;
         t.innerHTML = "";
-        if (current.price_student)
+        const two =
+          current.price_student &&
+          current.price_employed &&
+          current.price_student != current.price_employed;
+        if (two) {
           t.insertAdjacentHTML(
             "beforeend",
             `<option value="Student">Student · €${esc(current.price_student)}</option>`,
           );
-        if (current.price_employed)
           t.insertAdjacentHTML(
             "beforeend",
             `<option value="Employed">Employed · €${esc(current.price_employed)}</option>`,
           );
+        } else
+          t.insertAdjacentHTML(
+            "beforeend",
+            `<option value="Standard">Standard · €${esc(current.price_employed || current.price_student)}</option>`,
+          );
+        toggleStudent();
         const max =
           !hasCap(current) || full ? 3 : Math.min(3, Number(current.spotsLeft));
         regForm.seats.innerHTML = "";
@@ -2043,6 +2540,14 @@
         dlg.showModal();
         setTimeout(() => $("#r-name").focus(), 30);
       });
+      function toggleStudent() {
+        const on = regForm.ticket.value === "Student",
+          inp = $("#r-student");
+        $("#student-field").hidden = !on;
+        inp.required = on;
+        if (!on) inp.value = "";
+      }
+      regForm.ticket.addEventListener("change", toggleStudent);
       dlg.addEventListener("click", (e) => {
         if (e.target.closest("[data-close]") || e.target === dlg) {
           dlg.close();
@@ -2103,6 +2608,54 @@
             "That didn't go through. Check your connection and try again.";
         }
       });
+
+      /* Structured data so search engines can list workshops as events in Helsinki */
+      function addEventData() {
+        try {
+          const ev = workshops.map((w) => ({
+            "@context": "https://schema.org",
+            "@type": "Event",
+            name: w.title,
+            startDate: w.date + (w.start ? "T" + w.start + ":00+02:00" : ""),
+            endDate: w.end ? w.date + "T" + w.end + ":00+02:00" : undefined,
+            eventAttendanceMode:
+              "https://schema.org/OfflineEventAttendanceMode",
+            eventStatus: "https://schema.org/EventScheduled",
+            description: paras(w.description).join(" "),
+            location: {
+              "@type": "Place",
+              name: w.venue,
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: w.address || "",
+                addressLocality: "Helsinki",
+                addressCountry: "FI",
+              },
+            },
+            organizer: {
+              "@type": "Organization",
+              name: "Skill Spill",
+              url: location.href.split("#")[0],
+            },
+            performer: w.facilitator
+              ? { "@type": "Person", name: w.facilitator }
+              : undefined,
+            offers: [w.price_student, w.price_employed]
+              .filter(Boolean)
+              .map((p) => ({
+                "@type": "Offer",
+                price: String(p),
+                priceCurrency: "EUR",
+                availability: "https://schema.org/InStock",
+                url: location.href.split("#")[0] + "#ws-" + w.id,
+              })),
+          }));
+          const el = document.createElement("script");
+          el.type = "application/ld+json";
+          el.textContent = JSON.stringify(ev);
+          document.head.appendChild(el);
+        } catch (e) {}
+      }
 
       loadWorkshops();
     </script>
