@@ -1286,6 +1286,11 @@
                     facilitator guide by email straight away, and we reply
                     within a week.
                   </p>
+                  <p style="margin-top: 12px">
+                    <a href="facilitators.html"
+                      >Read the facilitator guide first →</a
+                    >
+                  </p>
                 </div>
                 <p class="muted" style="font-size: 0.95rem">
                   We like 2–3 months of lead time so there's enough room for
@@ -1864,6 +1869,16 @@
               </p>
             </details>
             <details>
+              <summary>I'd like to teach a workshop. How does it work?</summary>
+              <p>
+                Have a look at our
+                <a href="facilitators.html">facilitator guide</a>: how we work
+                together, pay, materials, invoicing and the planning timeline.
+                When you're ready, send us your idea through the
+                <a href="#propose">proposal form</a>.
+              </p>
+            </details>
+            <details>
               <summary>How do I contact you?</summary>
               <p>
                 Email
@@ -1910,6 +1925,7 @@
             >
             <p id="contact-email" hidden></p>
             <a href="#propose">Propose a workshop</a>
+            <a href="facilitators.html">Facilitator guide</a>
             <a href="#venue-form">Host a workshop</a>
           </div>
         </div>
@@ -1919,6 +1935,21 @@
         </div>
       </div>
     </footer>
+
+    <dialog id="done-dialog" aria-labelledby="done-title">
+      <div class="panel">
+        <div class="panel-h">
+          <span id="done-bar">sent</span
+          ><button type="button" class="x" data-close aria-label="Close">
+            ×
+          </button>
+        </div>
+        <div class="panel-b" style="display: grid; gap: 14px">
+          <h3 id="done-title" style="font-size: var(--s-2)">Sent</h3>
+          <div id="done-body" style="display: grid; gap: 14px"></div>
+        </div>
+      </div>
+    </dialog>
 
     <dialog id="reg-dialog" aria-labelledby="reg-title">
       <div class="panel">
@@ -2433,6 +2464,51 @@
         return "";
       }
 
+      /* Confirmation pop-ups after a proposal or venue pitch (same style as registration) */
+      const DONE = {
+        facilitator: (d) => ({
+          bar: "proposal_sent",
+          title: "Proposal sent ✓",
+          body: `
+    <p>Thank you${d.name ? ", " + esc(d.name.split(" ")[0]) : ""}! Your proposal for <b>${esc(d.title)}</b> is with us.</p>
+    <div class="dlg-sum"><b>What happens next</b>
+      <span>1. We read it and reply within a week.</span>
+      <span>2. If it's a good fit, we set up a short chat to plan it together.</span>
+      <span>3. We find a date and venue, usually 2–3 months ahead.</span></div>
+    <p class="muted" style="font-size:.92rem">We've emailed a copy of this and a link to our facilitator guide to ${esc(d.email)}.</p>
+    <div><a class="btn" href="facilitators.html">Read the facilitator guide →</a></div>`,
+        }),
+        venue: (d) => ({
+          bar: "venue_sent",
+          title: "Thanks, we got it ✓",
+          body: `
+    <p>Thank you${d.name ? ", " + esc(d.name.split(" ")[0]) : ""}! <b>${esc(d.venue)}</b> is on our list.</p>
+    <div class="dlg-sum"><b>What happens next</b>
+      <span>1. We review the details you sent.</span>
+      <span>2. We get back to you within a week to arrange a short visit or call.</span>
+      <span>3. Together we pick dates and terms that work for your space.</span></div>
+    <p class="muted" style="font-size:.92rem">We've emailed ${esc(d.email)} an overview of how hosting a Skill Spill workshop works.</p>`,
+        }),
+      };
+      function showDone(c, extra) {
+        $("#done-bar").textContent = c.bar;
+        $("#done-title").textContent = c.title;
+        $("#done-body").innerHTML =
+          c.body +
+          (extra || "") +
+          '<div style="margin-top:8px"><button class="btn" type="button" data-close>Close</button></div>';
+        $("#done-dialog").showModal();
+      }
+      document.addEventListener("click", (e) => {
+        const d = $("#done-dialog");
+        if (
+          d &&
+          d.open &&
+          (e.target.closest("#done-dialog [data-close]") || e.target === d)
+        )
+          d.close();
+      });
+
       const THANKS = {
         facilitator: [
           "Proposal received.",
@@ -2475,7 +2551,12 @@
             const res = await send({ type: form.dataset.type, ...data });
             if (!res.ok) throw new Error(res.error || "failed");
             const [h, p] = THANKS[form.dataset.type];
-            form.outerHTML = `<div class="success" role="status"><h3>${h}</h3><p class="muted">${p}</p>${res.demo ? '<p class="mono muted">preview mode: nothing was sent</p>' : ""}</div>`;
+            const demo = res.demo
+              ? '<p class="mono muted">preview mode: nothing was sent</p>'
+              : "";
+            form.outerHTML = `<div class="success" role="status"><h3>${h}</h3><p class="muted">${p}</p>${demo}</div>`;
+            if (DONE[form.dataset.type])
+              showDone(DONE[form.dataset.type](data), demo);
           } catch (ex) {
             btn.disabled = false;
             status.className = "form-status err";
