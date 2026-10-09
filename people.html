@@ -245,6 +245,7 @@ dialog .panel-b{overflow:auto}
 .ws-link{display:grid;grid-template-columns:4rem 1fr auto;gap:8px;padding:10px 0;border-top:1px solid var(--rule);text-decoration:none;color:var(--ink);align-items:baseline}
 .ws-link:last-of-type{border-bottom:1px solid var(--rule)}
 .ws-link .arrow{color:var(--accent)}
+.socials{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-family:var(--font-mono);font-size:var(--s-mono)}
 .ws-link:hover span:nth-child(2){text-decoration:underline;text-decoration-color:var(--accent)}
 nav a[aria-current="page"]{color:var(--accent)}
 </style>
@@ -254,10 +255,11 @@ nav a[aria-current="page"]{color:var(--accent)}
   <div class="wrap">
     <a class="logo" href="index.html">Skill Spill</a>
     <nav aria-label="Main">
-      <a href="index.html#workshops">workshops</a>
       <a href="index.html#about">about</a>
+      <a href="index.html#workshops">workshops</a>
       <a href="people.html" aria-current="page">facilitators</a>
       <a href="index.html#share">share a skill</a>
+      <a href="index.html#venues">venues</a>
       <a href="index.html#faq">faq</a>
     </nav>
   </div>
@@ -313,29 +315,34 @@ nav a[aria-current="page"]{color:var(--accent)}
 /* ============================================================
    FACILITATORS — edit this list to add or update people.
    name: as written in the Workshops sheet (used to match their workshops)
-   crafts: short tags · bio: their own words · link: website or Instagram (optional)
+   crafts: short tags · bio: their own words
+   instagram: their handle without @ (optional) · website: full address (optional)
    ============================================================ */
 const PEOPLE = [
   { name: "Katie Ballinger",
     role: "Artist · visual arts to coding",
     crafts: ["embroidery", "clothing repair", "bookbinding", "digital declutter"],
     bio: "Katie Ballinger is an artist from Canada who is a jack of all trades, from visual arts to coding. She worked in Silicon Valley tech for five years as a self-taught software engineer and recently graduated from Aalto University's New Media programme. As a big collector of data, she has been cleaning up her own digital mess and has recognised the lack of education or knowledge around this.",
-    link: "" },
+    instagram: "",
+    website: "" },
   { name: "Shweta Dash",
     role: "Textile designer",
     crafts: ["natural dyeing", "hand stitching", "textile layering"],
     bio: "Hi, I am Shweta, a textile designer working through material play and hands-on making. My workshop approach is open-minded and experimental while acknowledging traditional artisanal textile-making methods. Through facilitating workshops across Helsinki, Espoo and Joutsa, I have learned that craft techniques continuously shape-shift through the materials at hand and the outcomes they produce.",
-    link: "" },
+    instagram: "",
+    website: "" },
   { name: "Julia Martsenko",
     role: "Linocut",
     crafts: ["linocut", "printmaking"],
     bio: "Bio coming soon.",
-    link: "" },
+    instagram: "",
+    website: "" },
   { name: "Maija Vahteristo",
     role: "Knitting",
     crafts: ["knitting"],
     bio: "Bio coming soon.",
-    link: "" }
+    instagram: "",
+    website: "" }
 ];
 
 const ENDPOINT = (window.SKILLSPILL_CONFIG || {}).endpoint || "";   // set in config.js
@@ -441,6 +448,14 @@ const SAMPLE_WORKSHOPS = [
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const slug = t => String(t||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+/* Matches "Maija Vahteristo", "maija vahteristo ", "Maija", or "Katie Ballinger & Maija Vahteristo" */
+function isTheirs(fac, name){
+  const f = slug(fac), n = slug(name), first = n.split("-")[0];
+  if (!f) return false;
+  if (f === n || f.includes(n)) return true;
+  const sameFirst = PEOPLE.filter(q => slug(q.name).split("-")[0] === first).length === 1;
+  return sameFirst && (f === first || f.split("-").includes(first) && !PEOPLE.some(q => q.name !== name && f.includes(slug(q.name))));
+}
 const initials = n => String(n).split(/\s+/).filter(Boolean).map(w=>w[0]).slice(0,2).join("").toUpperCase();
 const fmt = (iso,o) => { const d=new Date(iso+"T12:00:00"); return isNaN(d)?iso:new Intl.DateTimeFormat("en-GB",o).format(d); };
 
@@ -448,7 +463,7 @@ function render(workshops){
   const today = new Date().toISOString().slice(0,10);
   $("#people-index").innerHTML = PEOPLE.map(p=>`<a href="#${slug(p.name)}">${esc(p.name)}</a>`).join("");
   $("#people").innerHTML = PEOPLE.map(p=>{
-    const mine = workshops.filter(w=>slug(w.facilitator)===slug(p.name) && String(w.date)>=today).sort((a,b)=>a.date.localeCompare(b.date));
+    const mine = workshops.filter(w=>isTheirs(w.facilitator, p.name) && String(w.date)>=today).sort((a,b)=>a.date.localeCompare(b.date));
     return `<article class="person" id="${slug(p.name)}">
       <div class="person-side">
         <div class="mono-mark" aria-hidden="true">${esc(initials(p.name))}</div>
@@ -458,7 +473,7 @@ function render(workshops){
         <p class="mono muted">${esc(p.role||"")}</p>
         <h2>${esc(p.name)}</h2>
         <p class="measure">${esc(p.bio)}</p>
-        ${p.link?`<p><a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(p.link.replace(/^https?:\/\//,""))} ↗</a></p>`:""}
+        ${p.instagram||p.website?`<p class="socials">${p.instagram?`<a href="https://www.instagram.com/${esc(p.instagram.replace(/^@/,""))}/" target="_blank" rel="noopener">Instagram @${esc(p.instagram.replace(/^@/,""))} ↗</a>`:""}${p.website?`<a href="${esc(p.website)}" target="_blank" rel="noopener">${esc(p.website.replace(/^https?:\/\//,"").replace(/\/$/,""))} ↗</a>`:""}</p>`:""}
       </div>
       <div class="person-ws">
         <p class="mono muted" style="margin-bottom:8px">${mine.length?"upcoming":"no workshops scheduled"}</p>

@@ -58,7 +58,8 @@ p{margin:0}
 /* ---------- hero ---------- */
 .hero{padding-block:72px 64px;border-bottom:1px solid var(--rule)}
 .hero-grid{display:grid;gap:48px;align-items:center}
-@media (min-width:900px){.hero-grid{grid-template-columns:1.4fr 1fr}}
+@media (min-width:900px){.hero-grid{grid-template-columns:1.1fr 1fr;align-items:end}}
+.hero-text .lead{margin-top:0;max-width:32ch}
 .mark{font-family:var(--font-mark);font-weight:500;font-size:var(--s-mark);line-height:.9;letter-spacing:-.02em;margin-top:18px}
 .mark .cur{display:inline-block;width:.42em;height:.78em;background:var(--accent);vertical-align:-.04em;margin-left:.06em;animation:blink 1.1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
@@ -140,6 +141,7 @@ details.more dd{margin:0}
 .spots-label{font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted)}
 .spots-label.full{color:var(--warn)}
 .empty{padding:32px 0;color:var(--muted)}
+.more-wrap{display:flex;justify-content:center;padding-top:28px}
 
 /* ---------- steps ---------- */
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:0;list-style:none;padding:0;margin:0;border-top:1px solid var(--ink);counter-reset:s}
@@ -246,8 +248,8 @@ dialog .panel-b{overflow:auto}
   <div class="wrap">
     <a class="logo" href="#top">Skill Spill</a>
     <nav aria-label="Main">
-      <a href="#workshops">workshops</a>
       <a href="#about">about</a>
+      <a href="#workshops">workshops</a>
       <a href="people.html">facilitators</a>
       <a href="#share">share a skill</a>
       <a href="#venues">venues</a>
@@ -271,17 +273,16 @@ dialog .panel-b{overflow:auto}
   <div class="hero">
     <div class="wrap hero-grid">
       <div>
-        <p class="mono muted">skill sharing · Helsinki</p>
+        <p class="mono muted">workshops · skill sharing · Helsinki</p>
         <h1 class="mark">Skill<br>Spill<span class="cur" aria-hidden="true"></span><span class="visually-hidden"> – creative skill-sharing workshops in Helsinki</span></h1>
-        <p class="lead">Small, hands-on workshops led by local makers. Come to learn a skill, stay for the people around the table.</p>
+      </div>
+      <div class="hero-text">
+        <p class="lead">A peer-to-peer creative community in Helsinki: a space for practical skills, creative hobbies and open knowledge-sharing.</p>
+        <p class="muted" style="margin-top:14px;max-width:40ch">Small, hands-on workshops led by local makers at cafés and studios around the city. Come to learn a skill, stay for the people around the table.</p>
         <div class="actions">
           <a class="btn go" href="#workshops">See upcoming workshops →</a>
           <a class="btn" href="#share">Share a skill</a>
         </div>
-      </div>
-      <div class="next" aria-label="Upcoming workshops">
-        <div class="next-h mono"><span>upcoming_workshops</span><span class="muted" id="season">Autumn 2026</span></div>
-        <ol id="next-list"><li><span class="mono muted">…</span><span class="muted">Loading</span></li></ol>
       </div>
     </div>
   </div>
@@ -297,16 +298,18 @@ dialog .panel-b{overflow:auto}
         <div><p class="label">workshops</p><h2>Upcoming workshops</h2></div>
         <p class="muted measure">Small, relaxed, hands-on evenings. Pick one, save your spot, and pay in advance with MobilePay so the workshop can go ahead.</p>
       </div>
-      <p id="demo-note" class="demo-note" hidden>Preview: registrations aren't saved until the site is connected to your Google Sheet.</p>
-      <div class="list" id="cards"><p class="empty mono">Loading workshops…</p></div>
-
-      <h3 style="margin-top:72px;margin-bottom:20px;font-size:var(--s-2)">How booking works</h3>
+      <h3 style="margin-bottom:16px;font-size:var(--s-1)">How booking works</h3>
       <ol class="steps">
         <li><h3>Save your spot</h3><p>Register with the form. Student and employed prices are listed on each workshop.</p></li>
         <li><h3>Pay in advance</h3><p>Pay via MobilePay Box <b class="mono" style="color:var(--ink)">8051YC</b> with your booking reference. No MobilePay? Get in touch and we'll sort something out.</p></li>
         <li><h3>We confirm</h3><p>Each workshop runs with at least 5 paid participants. We'll let you know if anything changes.</p></li>
         <li><h3>Come and make</h3><p>Arrive a few minutes early so everyone can settle in and we start together.</p></li>
       </ol>
+      <div style="height:48px"></div>
+      <p id="demo-note" class="demo-note" hidden>Preview: registrations aren't saved until the site is connected to your Google Sheet.</p>
+      <div class="list" id="cards"><p class="empty mono">Loading workshops…</p></div>
+      <div class="more-wrap" id="more-wrap" hidden><button class="btn" type="button" id="see-more">See more workshops ↓</button></div>
+
     </div>
   </section>
 
@@ -375,7 +378,7 @@ dialog .panel-b{overflow:auto}
           <div class="cols" style="gap:28px;align-items:end;margin-bottom:28px">
             <div>
               <h3 style="font-size:var(--s-2)">Propose a workshop</h3>
-              <p class="muted" style="margin-top:8px">About 15 minutes. It covers everything we need to plan together, so there's no back-and-forth. You'll get our facilitator guide by email straight away, and we reply within a week.</p>
+              <p class="muted" style="margin-top:8px">The form takes about 15 minutes to fill in. It covers everything we need to plan together, so there's no back-and-forth. You'll get our facilitator guide by email straight away, and we reply within a week.</p>
               <p style="margin-top:12px"><a href="facilitators.html">Read the facilitator guide first →</a></p>
             </div>
             <p class="muted" style="font-size:.95rem">We like 2–3 months of lead time so there's enough room for promotion. Not sure about some answers? A rough idea is fine.</p>
@@ -731,7 +734,7 @@ const paras = t => String(t||"").split(/\n\s*\n|\r\n\s*\r\n/).map(x=>x.trim()).f
 let workshops = [];
 
 $("#year").textContent = new Date().getFullYear();
-$("#season").textContent = SKILLSPILL.season || "";
+if ($("#season")) $("#season").textContent = SKILLSPILL.season || "";
 if (SKILLSPILL.contactEmail){ const c=$("#contact-email"); c.hidden=false; c.innerHTML='<span style="user-select:all">'+esc(SKILLSPILL.contactEmail)+'</span>'; }
 
 const D = iso => new Date(iso+"T12:00:00");
@@ -747,13 +750,17 @@ async function loadWorkshops(){
   if (isDemo()){ workshops = SAMPLE_WORKSHOPS; $("#demo-note").hidden = false; }
   else {
     try{ const r = await fetch(SKILLSPILL.endpoint+"?action=workshops"); workshops = (await r.json()).workshops || []; }
-    catch(e){ $("#cards").innerHTML = '<p class="empty">Couldn\'t load workshops right now. Refresh the page, or check Instagram or Telegram for the latest programme.</p>'; $("#next-list").innerHTML='<li><span></span><span class="muted">See Instagram for dates.</span></li>'; return; }
+    catch(e){ $("#cards").innerHTML = '<p class="empty">Couldn\'t load workshops right now. Refresh the page, or check Instagram or Telegram for the latest programme.</p>'; return; }
   }
   workshops.sort((a,b)=>(a.date+(a.start||"99")).localeCompare(b.date+(b.start||"99")));
   renderCards(); renderNext(); addEventData();
 }
 
+$("#see-more").addEventListener("click", ()=>{ showAll=true; renderCards(); });
+// open the full list when someone follows a link to a specific workshop
+if (/^#ws-/.test(location.hash)) showAll = true;
 function renderNext(){
+  if (!$("#next-list")) return;
   const n = workshops;
   $("#next-list").innerHTML = n.length ? n.map(w=>`<li><span class="mono muted">${esc(fmt(w.date,{weekday:"short"}))} ${esc(fmt(w.date,{day:"numeric",month:"numeric"}))}</span><span><a href="#ws-${esc(w.id)}">${esc(w.title)}</a><span class="mono muted sub">${esc(w.venue)} · ${esc(timeOf(w))}</span></span><span class="pr muted">${isFull(w)?'<span class="mono" style="color:var(--warn)">full</span>':priceText(w)}</span></li>`).join("")
     : '<li><span></span><span class="muted">New workshops coming soon.</span></li>';
@@ -766,9 +773,14 @@ function spotsHtml(w){
   return `<div class="spots"><div class="xs" aria-hidden="true">${cells}</div><span class="spots-label ${left?"":"full"}">${left?`${left} of ${cap} spots left`:"full · waitlist open"}</span></div>`;
 }
 
+const SHOW_FIRST = 4;   // how many workshops show before "See more"
+let showAll = false;
 function renderCards(){
   if (!workshops.length){ $("#cards").innerHTML = '<p class="empty">No workshops listed right now. Join Telegram or the email list to hear about the next ones.</p>'; return; }
-  $("#cards").innerHTML = workshops.map(w=>{
+  const extra = Math.max(0, workshops.length - SHOW_FIRST);
+  $("#more-wrap").hidden = showAll || !extra;
+  $("#see-more").textContent = `See ${extra} more workshop${extra===1?"":"s"} ↓`;
+  $("#cards").innerHTML = (showAll ? workshops : workshops.slice(0, SHOW_FIRST)).map(w=>{
     const full = isFull(w);
     const where = w.address ? `${esc(w.venue)}, ${esc(w.address)}` : esc(w.venue);
     return `<article class="ws" id="ws-${esc(w.id)}">
