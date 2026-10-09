@@ -30,6 +30,7 @@
 :root[data-theme="dark"]{--paper:#121310;--paper-2:#1b1c18;--ink:#ecece6;--muted:#9a9c92;--rule:#34362f;--accent:#4cc98a;--accent-ink:#0d1a12;--warn:#f08a6e;color-scheme:dark}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:var(--s-0);line-height:1.6;margin:0;-webkit-font-smoothing:antialiased}
@@ -584,6 +585,14 @@ dialog .panel-b{overflow:auto}
           </div>
           <div class="field" id="student-field" hidden><label for="r-student">Student number *</label><input id="r-student" name="student_number" type="text" autocomplete="off" inputmode="text"><span class="hint">Needed for the student price. Bring your student card to the workshop.</span></div>
           <div class="field"><label for="r-notes">Access needs, allergies or questions</label><textarea id="r-notes" name="notes" style="min-height:64px"></textarea></div>
+          <fieldset class="field" id="photo-field"><legend>Photos *</legend>
+            <span class="hint" style="margin-bottom:4px">We take a few photos during workshops for documentation and our Instagram. What's okay with you?</span>
+            <div class="checks" style="flex-direction:column;align-items:flex-start;gap:6px">
+              <label><input type="radio" name="photo_consent" value="Yes" required> Yes, photos of me are fine</label>
+              <label><input type="radio" name="photo_consent" value="Yes, no face"> Yes, but please don't show my face</label>
+              <label><input type="radio" name="photo_consent" value="No photos"> No photos of me, please</label>
+            </div>
+          </fieldset>
           <div class="policy-box" aria-labelledby="pol-h">
             <p class="mono" id="pol-h">cancellation policy</p>
             <ul>
@@ -838,6 +847,7 @@ function formToObject(form){
 }
 function validate(form){
   for (const el of $$("[required]",form)){
+    if (el.type==="radio"){ if (!form.querySelector(`input[name="${el.name}"]:checked`)){ el.focus(); return "Please choose an option for photos."; } continue; }
     const bad = el.type==="checkbox" ? !el.checked : !el.value.trim() || (el.type==="email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()));
     if (bad){ el.focus(); const lab = form.querySelector(`label[for="${el.id}"]`)?.textContent.replace("*","").trim() || "This field";
       return el.type==="checkbox" ? "Please tick the box to confirm." : (el.type==="email" && el.value) ? "Please check the email address." : `${lab} is needed.`; }
