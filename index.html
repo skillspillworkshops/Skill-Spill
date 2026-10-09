@@ -141,6 +141,7 @@ details.more dd{margin:0}
 .xs i.on{background:var(--ink);border-color:var(--ink)}
 .spots-label{font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted)}
 .spots-label.full{color:var(--warn)}
+.spots-label.few{color:var(--accent);font-weight:500}
 .empty{padding:32px 0;color:var(--muted)}
 .more-wrap{display:flex;justify-content:center;padding-top:28px}
 
@@ -416,7 +417,7 @@ dialog .panel-b{overflow:auto}
               <div class="field"><label for="f-len">Ideal length</label><input id="f-len" name="length" type="text" placeholder="We usually recommend 2–3 hours"></div>
               <div class="two" style="gap:12px">
                 <div class="field"><label for="f-min">Min. people</label><input id="f-min" name="min_participants" type="text" inputmode="numeric" placeholder="5"></div>
-                <div class="field"><label for="f-max">Max. people</label><input id="f-max" name="max_participants" type="text" inputmode="numeric" placeholder="12"></div>
+                <div class="field"><label for="f-max">Max. people *</label><input id="f-max" name="max_participants" type="text" inputmode="numeric" placeholder="12" required></div>
               </div>
             </div>
             <div class="two">
@@ -630,7 +631,9 @@ const SKILLSPILL = {
   heroImage: "",
   heroCaption: "",
   // Optional photo strip in the About section, e.g. {src:"images/embroidery-1.jpg", caption:"Embroidery 101"}
-  gallery: []
+  gallery: [],
+  // Show "Only N spots left" when this many spots or fewer remain (needs a capacity in the sheet)
+  spotsThreshold: 5
 };
 
 /* Programme shown while `endpoint` is empty. Once connected, workshops come from the Google Sheet. */
@@ -755,14 +758,26 @@ const isFull = w => hasCap(w) && !(Number(w.spotsLeft) > 0);
 const mapUrl = w => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([w.venue, w.address || "Helsinki"].filter(Boolean).join(", "));
 const priceText = w => w.price_student && w.price_employed && w.price_student!=w.price_employed ? `€${esc(w.price_student)} / €${esc(w.price_employed)}` : `€${esc(w.price_employed || w.price_student)}`;
 
+/* Speed: show the list this browser saw last time straight away, then refresh it from the sheet */
+const CACHE_KEY = "ss_workshops_v1";
+function readCache(){ try{ const c=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); return c && Date.now()-c.t < 3*864e5 ? c.w : null; }catch(e){ return null; } }
+function writeCache(w){ try{ localStorage.setItem(CACHE_KEY, JSON.stringify({t:Date.now(), w})); }catch(e){} }
+function showWorkshops(list){
+  const today = new Date().toISOString().slice(0,10);
+  workshops = list.filter(w=>String(w.date)>=today).sort((a,b)=>(a.date+(a.start||"99")).localeCompare(b.date+(b.start||"99")));
+  renderCards(); renderNext();
+}
 async function loadWorkshops(){
-  if (isDemo()){ workshops = SAMPLE_WORKSHOPS; $("#demo-note").hidden = false; }
-  else {
-    try{ const r = await fetch(SKILLSPILL.endpoint+"?action=workshops"); workshops = (await r.json()).workshops || []; }
-    catch(e){ $("#cards").innerHTML = '<p class="empty">Couldn\'t load workshops right now. Refresh the page, or check Instagram or Telegram for the latest programme.</p>'; return; }
+  if (isDemo()){ workshops = SAMPLE_WORKSHOPS; $("#demo-note").hidden = false; showWorkshops(workshops); addEventData(); return; }
+  const cached = readCache();
+  if (cached) showWorkshops(cached);
+  try{
+    const r = await fetch(SKILLSPILL.endpoint+"?action=workshops");
+    const fresh = (await r.json()).workshops || [];
+    writeCache(fresh); showWorkshops(fresh); addEventData();
+  }catch(e){
+    if (!cached) $("#cards").innerHTML = '<p class="empty">Couldn\'t load workshops right now. Refresh the page, or check Instagram or Telegram for the latest programme.</p>';
   }
-  workshops.sort((a,b)=>(a.date+(a.start||"99")).localeCompare(b.date+(b.start||"99")));
-  renderCards(); renderNext(); addEventData();
 }
 
 $("#see-more").addEventListener("click", ()=>{ showAll=true; renderCards(); });
@@ -776,10 +791,12 @@ function renderNext(){
 }
 
 function spotsHtml(w){
-  if (!hasCap(w)) return `<span class="spots-label">min. ${MIN_PARTICIPANTS} to run</span>`;
+  const min = `<span class="spots-label">min. ${MIN_PARTICIPANTS} to run</span>`;
+  if (!hasCap(w)) return min;
   const cap = Number(w.capacity), left = Math.max(0, Math.min(cap, Number(w.spotsLeft)||0));
-  let cells=""; for(let i=0;i<cap;i++) cells+=`<i class="${i<cap-left?"on":""}"></i>`;
-  return `<div class="spots"><div class="xs" aria-hidden="true">${cells}</div><span class="spots-label ${left?"":"full"}">${left?`${left} of ${cap} spots left`:"full · waitlist open"}</span></div>`;
+  if (!left) return `<span class="spots-label full">Full · waitlist open</span>`;
+  if (left <= (SKILLSPILL.spotsThreshold ?? 5)) return `<span class="spots-label few">Only ${left} spot${left===1?"":"s"} left</span>`;
+  return min;
 }
 
 const SHOW_FIRST = 4;   // how many workshops show before "See more"
@@ -958,6 +975,7 @@ regForm.addEventListener("submit", async e=>{
           ${res.demo?'<p class="mono muted">preview mode: nothing was saved or emailed</p>':`<p class="muted" style="font-size:.92rem">Details are on their way to ${esc(data.email)}.</p>`}
         </div>${close}`;
     $("#reg-form-wrap").hidden=true; $("#reg-done").hidden=false;
+    try{ localStorage.removeItem(CACHE_KEY); }catch(e){}
     if (!wait && !res.demo && hasCap(current)){ current.spotsLeft=Math.max(0,current.spotsLeft-Number(data.seats||1)); renderCards(); }
   }catch(ex){ btn.disabled=false; status.className="form-status err"; status.textContent="That didn't go through. Check your connection and try again."; }
 });
