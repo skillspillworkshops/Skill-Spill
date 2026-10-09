@@ -313,12 +313,13 @@ nav a[aria-current="page"]{color:var(--accent)}
 <script src="config.js"></script>
 <script>
 /* ============================================================
-   FACILITATORS — edit this list to add or update people.
+   FACILITATORS come from the "People" tab of the Google Sheet.
+   The list below is only a fallback for previews (when config.js has no endpoint).
    name: as written in the Workshops sheet (used to match their workshops)
    crafts: short tags · bio: their own words
    instagram: their handle without @ (optional) · website: full address (optional)
    ============================================================ */
-const PEOPLE = [
+let PEOPLE = [
   { name: "Katie Ballinger",
     role: "Artist · visual arts to coding",
     crafts: ["embroidery", "clothing repair", "bookbinding", "digital declutter"],
@@ -487,8 +488,12 @@ function render(workshops){
 
 (async()=>{
   if (!ENDPOINT) return render(SAMPLE_WORKSHOPS);
-  try { const r=await fetch(ENDPOINT+"?action=workshops"); render((await r.json()).workshops||[]); }
-  catch(e){ render([]); }
+  try {
+    const [wr, pr] = await Promise.all([fetch(ENDPOINT+"?action=workshops"), fetch(ENDPOINT+"?action=people")]);
+    const wj = await wr.json(), pj = await pr.json();
+    if (pj.ok && Array.isArray(pj.people) && pj.people.length) PEOPLE = pj.people;
+    render(wj.workshops||[]);
+  } catch(e){ render([]); }
 })();
 </script>
 
