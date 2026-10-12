@@ -585,6 +585,8 @@ dialog .panel-b{overflow:auto}
             <div class="field"><label for="r-seats">Spots</label><select id="r-seats" name="seats"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
           </div>
           <div class="field" id="student-field" hidden><label for="r-student">Student number *</label><input id="r-student" name="student_number" type="text" autocomplete="off" inputmode="text"><span class="hint">Needed for the student price. Bring your student card to the workshop.</span></div>
+          <div class="field" id="mat-field" hidden><label for="r-mat">Materials *</label><select id="r-mat" name="material_option"></select><span class="hint">Price per person, added to your ticket.</span></div>
+          <p class="mono" id="reg-total" hidden></p>
           <div id="extra-q" style="display:grid;gap:18px"></div>
           <div class="field"><label for="r-notes">Access needs, allergies or questions</label><textarea id="r-notes" name="notes" style="min-height:64px"></textarea></div>
           <fieldset class="field" id="photo-field"><legend>Photos *</legend>
@@ -759,6 +761,12 @@ const timeOf = w => w.start ? `${w.start}${w.end?"–"+w.end:""}` : "time TBC";
 const hasCap = w => Number(w.capacity) > 0;
 const isFull = w => hasCap(w) && !(Number(w.spotsLeft) > 0);
 const mapUrl = w => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([w.venue, w.address || "Helsinki"].filter(Boolean).join(", "));
+/* Material add-ons: one per line in the sheet, e.g. "Yarn | 8" */
+const matOptions = w => String(w.material_options||"").split(/\n+/).map(l=>l.trim()).filter(Boolean).map(l=>{
+  const m = l.match(/^(.*?)\s*(?:\||:|\+|€)\s*€?\s*(\d+(?:[.,]\d+)?)\s*€?$/);
+  return m ? {label:m[1].trim(), price:Number(m[2].replace(",","."))} : {label:l, price:0};
+});
+const matHint = w => { const o=matOptions(w).filter(x=>x.price>0); if(!o.length) return ""; const lo=Math.min(...o.map(x=>x.price)); return `+ materials from €${lo}`; };
 const priceText = w => w.price_student && w.price_employed && w.price_student!=w.price_employed ? `€${esc(w.price_student)} / €${esc(w.price_employed)}` : `€${esc(w.price_employed || w.price_student)}`;
 
 /* Speed: show the list this browser saw last time straight away, then refresh it from the sheet */
@@ -824,13 +832,14 @@ function renderCards(){
           ${w.bring?`<dt>bring</dt><dd>${esc(w.bring)}</dd>`:""}
           ${w.notes?`<dt>food</dt><dd>${esc(w.notes)}</dd>`:""}
           ${w.facilitator_bio?`<dt>${esc((w.facilitator||"facilitator").split(" ")[0].toLowerCase())}</dt><dd>${w.facilitator_photo?`<span class="face"><img class="duo" src="${esc(w.facilitator_photo)}" alt="${esc(w.facilitator||"")}" loading="lazy"><span>${esc(w.facilitator_bio)}</span></span>`:esc(w.facilitator_bio)}</dd>`:""}
+          ${matOptions(w).length?`<dt>material options</dt><dd>${matOptions(w).map(o=>`${esc(o.label)}${o.price?` +€${o.price}`:""}`).join(" · ")}</dd>`:""}
           <dt>payment</dt><dd>MobilePay Box ${esc(SKILLSPILL.mobilePayBox)}, ${w.pay_by?"by "+esc(fmt(w.pay_by,{day:"numeric",month:"long"})):"in advance"}</dd>
           <dt>minimum</dt><dd>${MIN_PARTICIPANTS} paid participants for the workshop to go ahead</dd>
           ${w.poster?`<dt>poster</dt><dd><button type="button" class="poster-btn" data-poster="${esc(w.poster)}" data-title="${esc(w.title)}">View poster</button></dd>`:""}
         </dl></details>
       </div>
       <div class="ws-side">
-        <div><p class="price">${priceText(w)}</p>${w.price_student&&w.price_employed&&w.price_student!=w.price_employed?'<p class="mono muted" style="margin-top:4px">student / employed</p>':""}</div>
+        <div><p class="price">${priceText(w)}</p>${w.price_student&&w.price_employed&&w.price_student!=w.price_employed?'<p class="mono muted" style="margin-top:4px">student / employed</p>':""}${matHint(w)?`<p class="mono muted" style="margin-top:2px">${matHint(w)}</p>`:""}</div>
         ${spotsHtml(w)}
         <button class="btn ${full?"":"go"}" type="button" data-register="${esc(w.id)}">${full?"Join waitlist":"Register →"}</button>
       </div></article>`;
@@ -842,8 +851,9 @@ async function send(payload){
     await new Promise(r=>setTimeout(r,600));
     if (payload.type==="registration"){
       const w = workshops.find(x=>x.id===payload.workshop_id);
-      const price = payload.ticket==="Student" ? w.price_student : w.price_employed;
-      return {ok:true,status:isFull(w)?"waitlist":"registered",ref:"SS-"+Math.random().toString(36).slice(2,7).toUpperCase(),amount:(Number(price)||0)*(Number(payload.seats)||1),payBy:w.pay_by||(()=>{const d=new Date(w.date+"T12:00:00");d.setDate(d.getDate()-2);return d.toISOString().slice(0,10)})(),demo:true};
+      const price = payload.ticket==="Student" ? (w.price_student||w.price_employed) : (w.price_employed||w.price_student);
+      const mat = (matOptions(w).find(o=>o.label===payload.material_option)||{price:0}).price;
+      return {ok:true,status:isFull(w)?"waitlist":"registered",ref:"SS-"+Math.random().toString(36).slice(2,7).toUpperCase(),amount:((Number(price)||0)+mat)*(Number(payload.seats)||1),payBy:w.pay_by||(()=>{const d=new Date(w.date+"T12:00:00");d.setDate(d.getDate()-2);return d.toISOString().slice(0,10)})(),demo:true};
     }
     return {ok:true,demo:true};
   }
@@ -933,6 +943,10 @@ document.addEventListener("click", e=>{
   regForm.reset(); regForm.workshop_id.value=current.id;
   // Workshop-specific questions (one per line in the sheet's extra_questions column)
   const qs = String(current.extra_questions||"").split(/\n+/).map(q=>q.trim()).filter(Boolean).slice(0,3);
+  const mo = matOptions(current);
+  $("#mat-field").hidden = !mo.length; $("#r-mat").required = !!mo.length;
+  $("#r-mat").innerHTML = mo.length ? `<option value="">Choose…</option>` + mo.map(o=>`<option value="${esc(o.label)}">${esc(o.label)}${o.price?` (+€${o.price})`:" (no extra cost)"}</option>`).join("") : "";
+  setTimeout(updateTotal);
   $("#extra-q").innerHTML = qs.map((q,i)=>`<div class="field"><label for="r-xq${i}">${esc(q)} *</label><input id="r-xq${i}" name="xq${i}" type="text" required data-q="${esc(q)}"></div>`).join("");
   $(".form-status",regForm).textContent=""; $("#reg-submit").disabled=false;
   $("#reg-title").textContent = full?"Join the waitlist":"Save your spot";
@@ -954,7 +968,20 @@ function toggleStudent(){
   const on = regForm.ticket.value==="Student", inp=$("#r-student");
   $("#student-field").hidden = !on; inp.required = on; if(!on) inp.value="";
 }
-regForm.ticket.addEventListener("change", toggleStudent);
+regForm.ticket.addEventListener("change", ()=>{ toggleStudent(); updateTotal(); });
+regForm.seats.addEventListener("change", updateTotal);
+$("#r-mat").addEventListener("change", updateTotal);
+function updateTotal(){
+  if (!current) return;
+  const opts = matOptions(current), t = regForm.ticket.value;
+  const base = Number(t==="Student" ? (current.price_student||current.price_employed) : (current.price_employed||current.price_student))||0;
+  const sel = opts.find(o=>o.label===regForm.material_option.value);
+  const seats = Number(regForm.seats.value)||1;
+  const el = $("#reg-total");
+  if (!opts.length){ el.hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = sel ? `Total: <b>€${(base+sel.price)*seats}</b> <span class="muted">(${seats>1?`${seats} × `:""}${sel.price?`${seats>1?"(":""}€${base} ticket + €${sel.price} ${esc(sel.label.toLowerCase())}${seats>1?")":""}`:`€${base} ticket`})</span>` : `<span class="muted">Choose your materials to see the total.</span>`;
+}
 dlg.addEventListener("click", e=>{
   if(e.target.closest("[data-close]")||e.target===dlg){ dlg.close(); if (e.target.closest('a[href="#policy"]')) $("#policy").open = true; }
 });
