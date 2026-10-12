@@ -585,6 +585,7 @@ dialog .panel-b{overflow:auto}
             <div class="field"><label for="r-seats">Spots</label><select id="r-seats" name="seats"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
           </div>
           <div class="field" id="student-field" hidden><label for="r-student">Student number *</label><input id="r-student" name="student_number" type="text" autocomplete="off" inputmode="text"><span class="hint">Needed for the student price. Bring your student card to the workshop.</span></div>
+          <div id="extra-q" style="display:grid;gap:18px"></div>
           <div class="field"><label for="r-notes">Access needs, allergies or questions</label><textarea id="r-notes" name="notes" style="min-height:64px"></textarea></div>
           <fieldset class="field" id="photo-field"><legend>Photos *</legend>
             <span class="hint" style="margin-bottom:4px">We take a few photos during workshops for documentation and our Instagram. What's okay with you?</span>
@@ -656,6 +657,7 @@ const SAMPLE_WORKSHOPS = [
  },
  {
   "id": "DARN-1020",
+  "extra_questions": "What kind of garment are you bringing to repair?",
   "title": "Clothing Repair: Darning",
   "date": "2026-10-20",
   "start": "18:00",
@@ -691,6 +693,7 @@ const SAMPLE_WORKSHOPS = [
  },
  {
   "id": "DARN-1110",
+  "extra_questions": "What kind of garment are you bringing to repair?",
   "title": "Clothing Repair: Darning",
   "date": "2026-11-10",
   "start": "18:00",
@@ -928,6 +931,9 @@ document.addEventListener("click", e=>{
   const full=isFull(current);
   $("#reg-form-wrap").hidden=false; $("#reg-done").hidden=true;
   regForm.reset(); regForm.workshop_id.value=current.id;
+  // Workshop-specific questions (one per line in the sheet's extra_questions column)
+  const qs = String(current.extra_questions||"").split(/\n+/).map(q=>q.trim()).filter(Boolean).slice(0,3);
+  $("#extra-q").innerHTML = qs.map((q,i)=>`<div class="field"><label for="r-xq${i}">${esc(q)} *</label><input id="r-xq${i}" name="xq${i}" type="text" required data-q="${esc(q)}"></div>`).join("");
   $(".form-status",regForm).textContent=""; $("#reg-submit").disabled=false;
   $("#reg-title").textContent = full?"Join the waitlist":"Save your spot";
   $("#reg-submit").textContent = full?"Join waitlist →":"Register →";
@@ -960,7 +966,10 @@ regForm.addEventListener("submit", async e=>{
   if (err){ status.textContent=err; status.className="form-status err"; return; }
   const btn=$("#reg-submit"); btn.disabled=true; status.className="form-status"; status.textContent="Saving your spot…";
   try{
-    const data=formToObject(regForm), res=await send({type:"registration",...data});
+    const data=formToObject(regForm);
+    data.answers = [...regForm.querySelectorAll("[data-q]")].map(el=>`${el.dataset.q} → ${el.value.trim()}`).join("\n");
+    Object.keys(data).filter(k=>/^xq\d$/.test(k)).forEach(k=>delete data[k]);
+    const res=await send({type:"registration",...data});
     if (!res.ok) throw new Error(res.error||"failed");
     const wait=res.status==="waitlist";
     const by = res.payBy ? `by ${esc(fmt(res.payBy,{day:"numeric",month:"long"}))}` : "as soon as you can";
