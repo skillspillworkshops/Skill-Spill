@@ -190,6 +190,10 @@ textarea{min-height:88px;resize:vertical;border:1px solid var(--rule);padding:9p
 textarea:focus{border-color:var(--accent);outline:1px solid var(--accent)}
 fieldset{border:0;padding:0;margin:0;min-width:0}
 .checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:4px}
+fieldset.picks{border:0;padding:0;margin:0}
+#join{scroll-margin-top:96px}
+fieldset.picks legend{font-family:var(--font-mono);font-size:var(--s-mono);padding:0;margin-bottom:6px}
+#idea-picks label{font-size:.92rem}
 .checks label{font-family:var(--font-body);font-size:.95rem;color:var(--ink);display:flex;gap:8px;align-items:center}
 input[type=checkbox],input[type=radio]{accent-color:var(--accent);width:16px;height:16px;margin:0}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -329,12 +333,13 @@ dialog .panel-b{overflow:auto}
         <div><p class="mono muted">fair & local</p><h3>Artists paid fairly</h3><p>Your ticket supports local facilitators and small independent venues.</p></div>
       </div>
 
-      <div class="panel" style="margin-top:56px">
+      <div class="panel" style="margin-top:56px" id="join">
         <div class="panel-h"><span>join_the_community</span><span class="dots" aria-hidden="true">□×</span></div>
-        <div class="panel-b cols" style="gap:28px;align-items:end">
+        <div class="panel-b cols" style="gap:28px;align-items:start">
           <div>
-            <h3 style="font-size:var(--s-2)">Stay in the loop</h3>
-            <p class="muted" style="margin-top:8px">New workshops, last-minute spots and community news. Join the Telegram channel, follow along on Instagram, or leave your email.</p>
+            <h3 style="font-size:var(--s-2)">Hear about new workshops first</h3>
+            <p class="muted" style="margin-top:8px">Groups are small, so spots go quickly. Leave your email and we'll tell you when new dates go up. Tell us what you'd love to learn, and we'll let you know when it's on.</p>
+            <p class="muted" style="margin-top:8px">Prefer your phone? Join the Telegram channel or follow along on Instagram.</p>
             <div class="actions" style="margin-top:18px">
               <a class="btn" href="https://t.me/+VEVrRvJ6kuRhN2Fh" target="_blank" rel="noopener">Telegram ↗</a>
               <a class="btn" href="https://www.instagram.com/skillspill.workshops/" target="_blank" rel="noopener">Instagram ↗</a>
@@ -342,8 +347,12 @@ dialog .panel-b{overflow:auto}
           </div>
           <form class="form" data-type="newsletter" novalidate>
             <div class="hp" aria-hidden="true"><label>Leave empty <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
-            <div class="field"><label for="n-email">Email</label><input id="n-email" name="email" type="email" required autocomplete="email"></div>
+            <div class="field"><label for="n-email">Email *</label><input id="n-email" name="email" type="email" required autocomplete="email"></div>
+            <fieldset class="field picks" id="idea-picks-wrap" hidden><legend>What would you love to learn? <span class="muted">(optional, pick any)</span></legend>
+              <div class="checks" id="idea-picks"></div></fieldset>
+            <div class="field"><label for="n-other">Something else? <span class="muted">(optional)</span></label><input id="n-other" name="other" type="text" maxlength="80" placeholder="e.g. sourdough, guitar repair, risograph"></div>
             <div><button class="btn go" type="submit">Join the list</button></div>
+            <p class="muted" style="font-size:.85rem">A few emails a season about new workshops. No spam, unsubscribe anytime.</p>
             <p class="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -431,6 +440,7 @@ dialog .panel-b{overflow:auto}
               <div class="field"><label for="f-photos">Photos: headshot and your work (up to 5)</label><input id="f-photos" name="photo_files" type="file" accept="image/*" multiple><span class="hint" id="f-photos-hint">JPG or PNG. Resized automatically.</span></div>
             </div>
             <div class="field"><label for="f-any">Anything else we should know?</label><textarea id="f-any" name="anything" style="min-height:64px"></textarea></div>
+            <div class="checks"><label><input type="checkbox" name="newsletter" value="yes"> Also tell me when new workshops are announced</label></div>
             <div><button class="btn go" type="submit">Send proposal →</button></div>
             <p class="form-status" role="status" aria-live="polite"></p>
           </form>
@@ -538,6 +548,7 @@ dialog .panel-b{overflow:auto}
         <a href="https://t.me/+VEVrRvJ6kuRhN2Fh" target="_blank" rel="noopener">Telegram ↗</a>
         <a href="https://www.instagram.com/skillspill.workshops/" target="_blank" rel="noopener">Instagram ↗</a>
         <p id="contact-email" hidden></p>
+        <a href="#join">Join the email list</a>
         <a href="#propose">Propose a workshop</a>
         <a href="people.html">Meet the facilitators</a>
         <a href="facilitators.html">Facilitator guide</a>
@@ -609,7 +620,7 @@ dialog .panel-b{overflow:auto}
           </div>
           <div class="checks" style="flex-direction:column;align-items:flex-start">
             <label><input type="checkbox" name="agree" value="yes" required> I agree to the cancellation policy *</label>
-            <label><input type="checkbox" name="newsletter" value="yes"> Send me news about future workshops</label>
+            <label><input type="checkbox" name="newsletter" value="yes"> Tell me when new workshops are announced</label>
           </div>
           <div><button class="btn go" type="submit" id="reg-submit">Register →</button></div>
           <p class="form-status" role="status" aria-live="polite"></p>
@@ -738,6 +749,7 @@ const SAMPLE_WORKSHOPS = [
   "price_employed": 30,
   "materials": "All tools and materials provided.",
   "bring": "Optional: your own paper or binding materials."
+
  }
 ];
 
@@ -769,6 +781,9 @@ const matOptions = w => String(w.material_options||"").split(/\n+/).map(l=>l.tri
 const matHint = w => { const o=matOptions(w).filter(x=>x.price>0); if(!o.length) return ""; const lo=Math.min(...o.map(x=>x.price)); return `+ materials from €${lo}`; };
 const priceText = w => w.price_student && w.price_employed && w.price_student!=w.price_employed ? `€${esc(w.price_student)} / €${esc(w.price_employed)}` : `€${esc(w.price_employed || w.price_student)}`;
 
+/* The site tells the sheet its own address, so emails can link back here without any setup */
+const SITE_BASE = /^https?:$/.test(location.protocol) ? location.origin + location.pathname.replace(/[^/]*$/,"") : "";
+
 /* Speed: show the list this browser saw last time straight away, then refresh it from the sheet */
 const CACHE_KEY = "ss_workshops_v1";
 function readCache(){ try{ const c=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); return c && Date.now()-c.t < 3*864e5 ? c.w : null; }catch(e){ return null; } }
@@ -783,7 +798,7 @@ async function loadWorkshops(){
   const cached = readCache();
   if (cached) showWorkshops(cached);
   try{
-    const r = await fetch(SKILLSPILL.endpoint+"?action=workshops");
+    const r = await fetch(SKILLSPILL.endpoint+"?action=workshops"+(SITE_BASE?"&site="+encodeURIComponent(SITE_BASE):""));
     const fresh = (await r.json()).workshops || [];
     writeCache(fresh); showWorkshops(fresh); addEventData();
   }catch(e){
@@ -805,7 +820,7 @@ function spotsHtml(w){
   const min = `<span class="spots-label">min. ${MIN_PARTICIPANTS} to run</span>`;
   if (!hasCap(w)) return min;
   const cap = Number(w.capacity), left = Math.max(0, Math.min(cap, Number(w.spotsLeft)||0));
-  if (!left) return `<span class="spots-label full">Full · waitlist open</span>`;
+  if (!left) return `<span class="spots-label full">Full · waitlist open</span> <a class="mono muted" style="font-size:var(--s-mono)" href="#join">hear about the next date</a>`;
   if (left <= (SKILLSPILL.spotsThreshold ?? 5)) return `<span class="spots-label few">Only ${left} spot${left===1?"":"s"} left</span>`;
   return min;
 }
@@ -857,7 +872,7 @@ async function send(payload){
     }
     return {ok:true,demo:true};
   }
-  const r = await fetch(SKILLSPILL.endpoint,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+  const r = await fetch(SKILLSPILL.endpoint,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({...payload,_site:SITE_BASE})});
   return r.json();
 }
 
@@ -910,10 +925,85 @@ function showDone(c, extra){
 }
 document.addEventListener("click", e=>{ const d=$("#done-dialog"); if(d && d.open && (e.target.closest("#done-dialog [data-close]")||e.target===d)) d.close(); });
 
+/* ---------- "what would you love to learn?" options (Ideas tab in the sheet) ---------- */
+const SAMPLE_IDEAS = [{id:"linocut-printing",idea:"Linocut printing"},{id:"visible-mending-sashiko",idea:"Visible mending & sashiko"},{id:"beginner-crochet",idea:"Beginner crochet"},{id:"zine-making",idea:"Zine making"},{id:"screen-printing",idea:"Screen printing"},{id:"natural-dyeing-with-kitchen-scraps",idea:"Natural dyeing with kitchen scraps"}];
+function showIdeas(list){
+  if (!list || !list.length || !$("#idea-picks")) return;
+  $("#idea-picks").innerHTML = list.map(i=>`<label><input type="checkbox" name="picks" value="${esc(i.id)}"> ${esc(i.idea)}</label>`).join("");
+  $("#idea-picks-wrap").hidden = false;
+}
+(async()=>{
+  if (isDemo()) return showIdeas(SAMPLE_IDEAS);
+  let cached=null; try{ cached=JSON.parse(localStorage.getItem("ss_ideas_v1")||"null"); }catch(e){}
+  if (cached) showIdeas(cached);
+  try{ const r=await fetch(SKILLSPILL.endpoint+"?action=ideas"); const j=await r.json();
+    if (j.ok){ if (!cached || JSON.stringify(cached)!==JSON.stringify(j.ideas)) showIdeas(j.ideas); try{ localStorage.setItem("ss_ideas_v1", JSON.stringify(j.ideas)); }catch(e){} } }catch(e){}
+})();
+
+/* ---------- Links from emails: #vote=…, #unsubscribe=…, #join-ref=… ----------
+   Nothing changes until the person clicks a button here. */
+let demoVotes = {};
+async function api(params){
+  if (isDemo()){
+    await new Promise(r=>setTimeout(r,300));
+    if (params.action==="api_vote"){ const had=demoVotes[params.pick]; demoVotes[params.pick]=true; params.result=had?"already":"counted"; }
+    if (params.action.startsWith("api_vote")) return {ok:true,result:params.result||"",ideas:SAMPLE_IDEAS.map((i,n)=>({...i,votes:(n%3)+(demoVotes[i.id]?1:0),mine:!!demoVotes[i.id]}))};
+    return {ok:true,found:true,demo:true};
+  }
+  const r = await fetch(SKILLSPILL.endpoint+"?"+new URLSearchParams(params)); return r.json();
+}
+function linkDialog(bar,title,html){
+  $("#done-bar").textContent=bar; $("#done-title").textContent=title; $("#done-body").innerHTML=html;
+  if (!$("#done-dialog").open) $("#done-dialog").showModal();
+}
+const closeBtn = '<div><button class="btn" type="button" data-close>Close</button></div>';
+const oops = '<p>Something went wrong. Try again in a moment, or email <span style="user-select:all">skillspillworkshops@gmail.com</span>.</p>'+closeBtn;
+async function voteUI(v, s, pick){
+  if (!pick) linkDialog("vote","What should we teach next?","<p class=\"muted\">Loading…</p>");
+  try{
+    const res = await api(pick?{action:"api_vote",v,s,pick}:{action:"api_votes",v});
+    if (!res.ok) return linkDialog("vote","Hmm","<p>This voting link looks incomplete. Try the button in the email again.</p>"+closeBtn);
+    const picked = pick && res.ideas.find(i=>i.id===pick);
+    const msg = picked ? (res.result==="already" ? `You've already voted for <b>${esc(picked.idea)}</b>.` : `✓ Counted: <b>${esc(picked.idea)}</b>. Thank you!`) : "Vote for as many as you like. We use this to plan the next workshops.";
+    linkDialog("vote","What should we teach next?", `<p${picked?' style="color:var(--accent)"':' class="muted"'}>${msg}</p>
+      <div style="border-top:1px solid var(--rule)">${res.ideas.map(i=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--rule)">
+        <span>${esc(i.idea)} <span class="muted mono" style="font-size:var(--s-mono)">· ${i.votes}</span></span>
+        ${i.mine?'<span class="mono" style="color:var(--accent);white-space:nowrap">✓ your vote</span>':`<button class="btn" type="button" data-pick="${esc(i.id)}">Vote</button>`}</div>`).join("")||'<p class="muted">No ideas listed right now.</p>'}</div>
+      <p class="muted" style="font-size:.95rem">Something else you'd love to learn? Email <span style="user-select:all;color:var(--ink)">skillspillworkshops@gmail.com</span>, or <a href="#propose" data-close>teach it yourself</a>.</p>${closeBtn}`);
+    $$("#done-body [data-pick]").forEach(b=>b.addEventListener("click",()=>{ b.disabled=true; voteUI(v,s,b.dataset.pick); }));
+  }catch(e){ linkDialog("vote","Hmm",oops); }
+}
+function unsubUI(t, step){
+  if (!step) return linkDialog("email list","Unsubscribe?",`<p>Stop getting emails about new workshops from Skill Spill? You'll still get emails about any workshop you book.</p>
+    <div class="actions" style="margin-top:0"><button class="btn go" type="button" id="unsub-yes">Yes, unsubscribe me</button><button class="btn" type="button" data-close>Keep me on the list</button></div>`) || $("#unsub-yes").addEventListener("click",()=>unsubUI(t,"go"));
+  const action = step==="go" ? "api_unsubscribe" : "api_resubscribe";
+  api({action,t}).then(res=>{
+    if (!res.ok) return linkDialog("email list","Hmm",oops);
+    if (step==="go") { linkDialog("email list","You're unsubscribed",`<p>${res.found?"No more list emails. Thanks for being part of Skill Spill.":"That address wasn't on the list (it may already be removed)."}</p>
+      <p class="muted">Clicked by mistake?</p><div class="actions" style="margin-top:0"><button class="btn" type="button" id="unsub-undo">Re-join the list</button><button class="btn" type="button" data-close>Close</button></div>`);
+      $("#unsub-undo") && $("#unsub-undo").addEventListener("click",()=>unsubUI(t,"undo")); }
+    else linkDialog("email list","Welcome back 💚","<p>You're back on the list.</p>"+closeBtn);
+  }).catch(()=>linkDialog("email list","Hmm",oops));
+}
+function joinUI(r, t, go){
+  if (!go) return linkDialog("email list","Hear about new workshops first",`<p>Groups are small, so spots go quickly. We'll email you when new dates go up. A few emails a season, no spam, unsubscribe anytime.</p>
+    <div class="actions" style="margin-top:0"><button class="btn go" type="button" id="join-yes">Yes, add me</button><button class="btn" type="button" data-close>No thanks</button></div>`) || $("#join-yes").addEventListener("click",()=>joinUI(r,t,true));
+  api({action:"api_join_ref",r,t}).then(res=>linkDialog("email list", res.ok?"You're on the list 💚":"Hmm", res.ok?"<p>We'll let you know when new workshops go up.</p>"+closeBtn:"<p>We couldn't find your booking. Email us and we'll add you by hand.</p>"+closeBtn))
+    .catch(()=>linkDialog("email list","Hmm",oops));
+}
+(function handleLinkHash(){
+  const h = new URLSearchParams(location.hash.slice(1)); let hit=true;
+  if (h.get("vote")) voteUI(h.get("vote"), h.get("s")||"");
+  else if (h.get("unsubscribe")) unsubUI(h.get("unsubscribe"));
+  else if (h.get("join-ref")) joinUI(h.get("join-ref"), h.get("t")||"");
+  else hit=false;
+  if (hit) try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){}
+})();
+
 const THANKS = {
   facilitator:["Proposal received.","We've emailed you our facilitator guide and what happens next. We'll get back to you within a week."],
   venue:["Thanks, details received.","We've emailed you an overview of how partnering works, and we'll be in touch within a week to arrange a visit or call."],
-  newsletter:["You're on the list.","We'll email you about new workshops and community news."]
+  newsletter:["You're on the list.","We'll email you when new workshops go up, and when something you picked is on."]
 };
 $$("form[data-type]").forEach(form=>form.addEventListener("submit", async e=>{
   e.preventDefault();
@@ -1046,6 +1136,5 @@ document.addEventListener("click", e=>{
 
 loadWorkshops();
 </script>
-
 </body>
 </html>

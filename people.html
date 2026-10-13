@@ -304,6 +304,7 @@ nav a[aria-current="page"]{color:var(--accent)}
       <div class="links">
         <a href="https://t.me/+VEVrRvJ6kuRhN2Fh" target="_blank" rel="noopener">Telegram ↗</a>
         <a href="https://www.instagram.com/skillspill.workshops/" target="_blank" rel="noopener">Instagram ↗</a>
+        <a href="index.html#join">Join the email list</a>
         <span class="muted" style="user-select:all">skillspillworkshops@gmail.com</span>
       </div>
     </div>
@@ -480,7 +481,7 @@ function render(workshops){
       <div class="person-ws">
         <p class="mono muted" style="margin-bottom:8px">${mine.length?"upcoming":"no workshops scheduled"}</p>
         ${mine.map(w=>`<a class="ws-link" href="index.html#ws-${esc(w.id)}"><span class="mono">${esc(fmt(w.date,{day:"numeric",month:"short"}))}</span><span>${esc(w.title)}</span><span class="arrow">→</span></a>`).join("")}
-        ${mine.length?"":`<p class="muted" style="font-size:.95rem">Follow <a href="https://www.instagram.com/skillspill.workshops/" target="_blank" rel="noopener">@skillspill.workshops</a> for new dates.</p>`}
+        ${mine.length?"":`<p class="muted" style="font-size:.95rem"><a href="index.html#join">Join the email list</a> or follow <a href="https://www.instagram.com/skillspill.workshops/" target="_blank" rel="noopener">@skillspill.workshops</a> for new dates.</p>`}
       </div>
     </article>`;
   }).join("");
