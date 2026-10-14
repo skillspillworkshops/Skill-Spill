@@ -726,6 +726,7 @@ const SAMPLE_WORKSHOPS = [
   "id": "AVO-1116",
   "title": "Avocado-Dyed Hand Towels: Layer, Stitch & Create",
   "date": "2026-11-16",
+  "closes_at": "2026-11-13T15:00:00.000Z",
   "start": "17:00",
   "end": "19:00",
   "venue": "Venue TBC",
@@ -812,11 +813,17 @@ if (/^#ws-/.test(location.hash)) showAll = true;
 function renderNext(){
   if (!$("#next-list")) return;
   const n = workshops;
-  $("#next-list").innerHTML = n.length ? n.map(w=>`<li><span class="mono muted">${esc(fmt(w.date,{weekday:"short"}))} ${esc(fmt(w.date,{day:"numeric",month:"numeric"}))}</span><span><a href="#ws-${esc(w.id)}">${esc(w.title)}</a><span class="mono muted sub">${esc(w.venue)} · ${esc(timeOf(w))}</span></span><span class="pr muted">${isFull(w)?'<span class="mono" style="color:var(--warn)">full</span>':priceText(w)}</span></li>`).join("")
+  $("#next-list").innerHTML = n.length ? n.map(w=>`<li><span class="mono muted">${esc(fmt(w.date,{weekday:"short"}))} ${esc(fmt(w.date,{day:"numeric",month:"numeric"}))}</span><span><a href="#ws-${esc(w.id)}">${esc(w.title)}</a><span class="mono muted sub">${esc(w.venue)} · ${esc(timeOf(w))}</span></span><span class="pr muted">${isClosed(w)?'<span class="mono">closed</span>':isFull(w)?'<span class="mono" style="color:var(--warn)">full</span>':priceText(w)}</span></li>`).join("")
     : '<li><span></span><span class="muted">New workshops coming soon.</span></li>';
 }
 
+/* Registration deadline (set per workshop in the sheet) */
+const isClosed = w => !!w.closed || (!!w.closes_at && new Date(w.closes_at) <= new Date());
+const closesLabel = w => { const d=new Date(w.closes_at); if (isNaN(d)) return "";
+  const p=new Intl.DateTimeFormat("en-GB",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",hourCycle:"h23",timeZone:"Europe/Helsinki"}).formatToParts(d).reduce((o,x)=>(o[x.type]=x.value,o),{});
+  return `${p.weekday} ${p.day} ${p.month}, ${p.hour}:${p.minute}`; };
 function spotsHtml(w){
+  if (isClosed(w)) return `<a class="mono muted" style="font-size:var(--s-mono)" href="#join">hear about the next date</a>`;
   const min = `<span class="spots-label">min. ${MIN_PARTICIPANTS} to run</span>`;
   if (!hasCap(w)) return min;
   const cap = Number(w.capacity), left = Math.max(0, Math.min(cap, Number(w.spotsLeft)||0));
@@ -856,7 +863,8 @@ function renderCards(){
       <div class="ws-side">
         <div><p class="price">${priceText(w)}</p>${w.price_student&&w.price_employed&&w.price_student!=w.price_employed?'<p class="mono muted" style="margin-top:4px">student / employed</p>':""}${matHint(w)?`<p class="mono muted" style="margin-top:2px">${matHint(w)}</p>`:""}</div>
         ${spotsHtml(w)}
-        <button class="btn ${full?"":"go"}" type="button" data-register="${esc(w.id)}">${full?"Join waitlist":"Register →"}</button>
+        ${isClosed(w) ? `<button class="btn" type="button" disabled>Registration closed</button>`
+          : `<button class="btn ${full?"":"go"}" type="button" data-register="${esc(w.id)}">${full?"Join waitlist":"Register →"}</button>${w.closes_at?`<p class="mono muted" style="font-size:var(--s-mono)">registration closes ${esc(closesLabel(w))}</p>`:""}`}
       </div></article>`;
   }).join("");
 }
@@ -866,6 +874,7 @@ async function send(payload){
     await new Promise(r=>setTimeout(r,600));
     if (payload.type==="registration"){
       const w = workshops.find(x=>x.id===payload.workshop_id);
+      if (isClosed(w)) return {ok:false,error:"closed"};
       const price = payload.ticket==="Student" ? (w.price_student||w.price_employed) : (w.price_employed||w.price_student);
       const mat = (matOptions(w).find(o=>o.label===payload.material_option)||{price:0}).price;
       return {ok:true,status:isFull(w)?"waitlist":"registered",ref:"SS-"+Math.random().toString(36).slice(2,7).toUpperCase(),amount:((Number(price)||0)+mat)*(Number(payload.seats)||1),payBy:w.pay_by||(()=>{const d=new Date(w.date+"T12:00:00");d.setDate(d.getDate()-2);return d.toISOString().slice(0,10)})(),demo:true};
@@ -1028,6 +1037,7 @@ const dlg=$("#reg-dialog"), regForm=$("#reg-form"); let current=null;
 document.addEventListener("click", e=>{
   const b=e.target.closest("[data-register]"); if(!b) return;
   current=workshops.find(w=>w.id===b.dataset.register); if(!current) return;
+  if (isClosed(current)) { renderCards(); return; }
   const full=isFull(current);
   $("#reg-form-wrap").hidden=false; $("#reg-done").hidden=true;
   regForm.reset(); regForm.workshop_id.value=current.id;
@@ -1087,6 +1097,7 @@ regForm.addEventListener("submit", async e=>{
     data.answers = [...regForm.querySelectorAll("[data-q]")].map(el=>`${el.dataset.q} → ${el.value.trim()}`).join("\n");
     Object.keys(data).filter(k=>/^xq\d$/.test(k)).forEach(k=>delete data[k]);
     const res=await send({type:"registration",...data});
+    if (!res.ok && res.error==="closed"){ btn.disabled=true; status.className="form-status err"; status.textContent="Sorry, registration for this workshop has just closed."; current.closed=true; renderCards(); return; }
     if (!res.ok) throw new Error(res.error||"failed");
     const wait=res.status==="waitlist";
     const by = res.payBy ? `by ${esc(fmt(res.payBy,{day:"numeric",month:"long"}))}` : "as soon as you can";
