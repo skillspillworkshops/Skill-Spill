@@ -348,9 +348,9 @@ dialog .panel-b{overflow:auto}
           <form class="form" data-type="newsletter" novalidate>
             <div class="hp" aria-hidden="true"><label>Leave empty <input type="text" name="website_url" tabindex="-1" autocomplete="off"></label></div>
             <div class="field"><label for="n-email">Email *</label><input id="n-email" name="email" type="email" required autocomplete="email"></div>
-            <fieldset class="field picks" id="idea-picks-wrap" hidden><legend>What would you love to learn? <span class="muted">(optional, pick any)</span></legend>
+            <fieldset class="field picks" id="idea-picks-wrap" hidden><legend>What are you into? <span class="muted">(optional, pick any)</span></legend>
               <div class="checks" id="idea-picks"></div></fieldset>
-            <div class="field"><label for="n-other">Something else? <span class="muted">(optional)</span></label><input id="n-other" name="other" type="text" maxlength="80" placeholder="e.g. sourdough, guitar repair, risograph"></div>
+            <div class="field"><label for="n-other">Something else? <span class="muted">(optional)</span></label><input id="n-other" name="other" type="text" maxlength="80" placeholder="anything else you'd love to learn"></div>
             <div><button class="btn go" type="submit">Join the list</button></div>
             <p class="muted" style="font-size:.85rem">A few emails a season about new workshops. No spam, unsubscribe anytime.</p>
             <p class="form-status" role="status" aria-live="polite"></p>
@@ -374,7 +374,7 @@ dialog .panel-b{overflow:auto}
             <li>Finding the venue and the date</li>
             <li>Registrations, payments and participant emails</li>
             <li>Promotion across our channels</li>
-            <li>Hosting on the day, so you can focus on teaching</li>
+            <li>Support with planning, so you can focus on teaching</li>
           </ul>
         </div>
         <div>
@@ -935,7 +935,7 @@ function showDone(c, extra){
 document.addEventListener("click", e=>{ const d=$("#done-dialog"); if(d && d.open && (e.target.closest("#done-dialog [data-close]")||e.target===d)) d.close(); });
 
 /* ---------- "what would you love to learn?" options (Ideas tab in the sheet) ---------- */
-const SAMPLE_IDEAS = [{id:"linocut-printing",idea:"Linocut printing"},{id:"visible-mending-sashiko",idea:"Visible mending & sashiko"},{id:"beginner-crochet",idea:"Beginner crochet"},{id:"zine-making",idea:"Zine making"},{id:"screen-printing",idea:"Screen printing"},{id:"natural-dyeing-with-kitchen-scraps",idea:"Natural dyeing with kitchen scraps"}];
+const SAMPLE_IDEAS = [{id:"textiles-sewing",idea:"Textiles & sewing"},{id:"knitting-crochet",idea:"Knitting & crochet"},{id:"embroidery-mending",idea:"Embroidery & mending"},{id:"printmaking",idea:"Printmaking"},{id:"drawing-painting",idea:"Drawing & painting"},{id:"paper-bookbinding",idea:"Paper & bookbinding"},{id:"natural-dyeing",idea:"Natural dyeing"},{id:"ceramics-clay",idea:"Ceramics & clay"},{id:"digital-skills",idea:"Digital skills"},{id:"music-sound",idea:"Music & sound"}];
 function showIdeas(list){
   if (!list || !list.length || !$("#idea-picks")) return;
   $("#idea-picks").innerHTML = list.map(i=>`<label><input type="checkbox" name="picks" value="${esc(i.id)}"> ${esc(i.idea)}</label>`).join("");
