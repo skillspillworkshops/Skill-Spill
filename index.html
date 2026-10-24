@@ -182,6 +182,7 @@ details.more dd{margin:0}
 .field{display:grid;gap:6px;min-width:0}
 .field label,.field legend{font-family:var(--font-mono);font-size:var(--s-mono);color:var(--muted)}
 .hint{font-size:.85rem;color:var(--muted)}
+.calc-preview{border-left:2px solid var(--accent);padding:6px 12px;background:var(--paper-2);line-height:1.5}
 input[type=text],input[type=email],input[type=tel],select,textarea{font:inherit;font-size:1rem;width:100%;padding:9px 0;background:transparent;color:var(--ink);border:0;border-bottom:1px solid var(--ink);border-radius:0}
 select{padding-right:4px}
 select option{background:var(--paper);color:var(--ink)}
@@ -411,8 +412,8 @@ dialog .panel-b{overflow:auto}
 
             <p class="form-group mono">02 · your workshop</p>
             <div class="field"><label for="f-title">Workshop title *</label><input id="f-title" name="title" type="text" required placeholder="e.g. Sashiko mending for beginners"></div>
-            <div class="field"><label for="f-format">What will you do, and how do you see the format? *</label><textarea id="f-format" name="format" required></textarea></div>
-            <div class="field"><label for="f-promo">Short description for promotion</label><textarea id="f-promo" name="promo" placeholder="2–4 sentences we can use on the website and social media"></textarea></div>
+            <div class="field"><label for="f-promo">Short description for promotion *</label><textarea id="f-promo" name="promo" required placeholder="2–4 sentences we can use on the website and social media"></textarea></div>
+            <div class="field"><label for="f-format">What will you do, and how do you see the format?</label><textarea id="f-format" name="format" placeholder="Optional: the steps, the pace, what people take home"></textarea></div>
             <div class="two">
               <div class="field"><label for="f-focus">Main focus</label>
                 <select id="f-focus" name="focus"><option>Learning and developing a skill</option><option>Completing a project to take home</option><option>A mix of both</option></select></div>
@@ -424,17 +425,15 @@ dialog .panel-b{overflow:auto}
             <p class="form-group mono">03 · practical details</p>
             <div class="two">
               <div class="field"><label for="f-len">Ideal length</label><input id="f-len" name="length" type="text" placeholder="We usually recommend 2–3 hours"></div>
-              <div class="two" style="gap:12px">
-                <div class="field"><label for="f-min">Min. people</label><input id="f-min" name="min_participants" type="text" inputmode="numeric" placeholder="5"></div>
-                <div class="field"><label for="f-max">Max. people *</label><input id="f-max" name="max_participants" type="text" inputmode="numeric" placeholder="12" required></div>
-              </div>
+              <div class="field"><label for="f-max">Max. people *</label><input id="f-max" name="max_participants" type="text" inputmode="numeric" placeholder="10–12" required><span class="hint">Workshops need 5 paid participants to run. At Byroo, 10–12 is the most that fits. Other venues may differ.</span></div>
             </div>
             <div class="two">
-              <div class="field"><label for="f-price">Fair ticket price, incl. materials</label><input id="f-price" name="price" type="text" placeholder="e.g. €25 student / €35 employed"></div>
-              <div class="field"><label for="f-fee">Your expected fee or rate, if any</label><input id="f-fee" name="fee" type="text"><span class="hint">We usually work with a revenue share: you receive 70% of ticket income after materials.</span></div>
+              <div class="field"><label for="f-price">Suggested ticket price per person (€)</label><input id="f-price" name="price" type="text" inputmode="decimal" placeholder="e.g. 30"><span class="hint">Including materials. Not sure? Leave it and we'll suggest one.</span></div>
+              <div class="field"><label for="f-matcost">Material cost per person (€)</label><input id="f-matcost" name="material_cost" type="text" inputmode="decimal" placeholder="e.g. 8"><span class="hint">You source the materials and are paid back from ticket income. Write 0 if people bring their own.</span></div>
             </div>
+            <p class="calc-preview mono" id="f-calc" hidden aria-live="polite"></p>
+            <div class="field"><label for="f-mat">Materials needed</label><textarea id="f-mat" name="materials" style="min-height:64px" placeholder="What you'll provide, and anything participants should bring"></textarea></div>
             <div class="field"><label for="f-dates">Preferred days, times or dates</label><input id="f-dates" name="dates" type="text" placeholder="e.g. weekday evenings from February"></div>
-            <div class="field"><label for="f-mat">Materials: what's needed, who provides them, cost per person</label><textarea id="f-mat" name="materials" style="min-height:64px"></textarea></div>
             <div class="two">
               <div class="field"><label for="f-space">Space requirements</label><input id="f-space" name="space" type="text" placeholder="e.g. sink, big tables, power outlets"></div>
               <div class="field"><label for="f-photos">Photos: headshot and your work (up to 5)</label><input id="f-photos" name="photo_files" type="file" accept="image/*" multiple><span class="hint" id="f-photos-hint">JPG or PNG. Resized automatically.</span></div>
@@ -1007,6 +1006,22 @@ function joinUI(r, t, go){
   else if (h.get("join-ref")) joinUI(h.get("join-ref"), h.get("t")||"");
   else hit=false;
   if (hit) try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){}
+})();
+
+/* ---------- proposal form: live estimate from ticket price and material cost ---------- */
+(function(){
+  const num = v => { const m = String(v||"").replace(",",".").match(/\d+(\.\d+)?/); return m ? Number(m[0]) : NaN; };
+  const eur = n => { n = Math.round(n*100)/100; return "€" + (n % 1 ? n.toFixed(2) : String(n)); };
+  const out = $("#f-calc"), price = $("#f-price"), mat = $("#f-matcost"); if (!out) return;
+  const upd = () => {
+    const p = num(price.value), m = num(mat.value) || 0;
+    if (!(p > 0)) { out.hidden = true; return; }
+    out.hidden = false;
+    const left = p - m;
+    if (left <= 0) { out.textContent = "The materials cost as much as the ticket, so there's nothing left to share. Try a higher price or cheaper materials."; return; }
+    out.innerHTML = "Rough estimate for you (70% of what's left after materials):<br>" + [5,8,10,12].map(n => `${n} people: ${eur(left*n*0.7)}${m ? ` + ${eur(m*n)} materials back` : ""}`).join("<br>");
+  };
+  price.addEventListener("input", upd); mat.addEventListener("input", upd);
 })();
 
 const THANKS = {
